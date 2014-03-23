@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+    xmlns:gap = "http://phonegap.com/ns/1.0"
+    id        = "io.github.kubaszostak.mapviewer"
+    versionCode="140323"
+    version   = "1.5.323">
+
+  <!-- versionCode is optional and Android only -->
+
+  <name>MapViewer.org</name>
+
+  <description><![CDATA[View online maps avaiable throught web services like OGCS Web Map Service (WMS) or ArcGIS REST services.
+]]>    
+  </description>
+
+  <author href="https://kubaszostak.github.io" email="kuba.szostak@gmail.com">
+    Kuba Szostak
+  </author>
+  
+  <icon src="map.png" />
+  <preference name="permissions" value="none"/>
+  <preference name="exit-on-suspend" value="false" />
+
+</widget>
