@@ -1,0 +1,250 @@
+﻿/* make sure the viewport is 100% height */
+html, body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+
+.singleline {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+
+.multiline {
+    text-overflow: initial;
+    overflow: auto;
+    white-space:normal;
+}
+
+/* make the page element 100% height*/
+#map {
+    height: 100%;
+}
+
+    /* specify a height for the header so we can line-up the elements, the default is 40px */
+    #map .ui-header {
+        height: 42px;
+    }
+
+    #map .ui-controlgroup {
+    }
+
+
+    /* set the content to be full-width and height except it doesn't overlap the header or footer */
+    #map .ui-content {
+        position: absolute;
+        top: 42px; /* .ui-header.height */
+        right: 0;
+        bottom: 0px;
+        left: 0;
+        padding: 0 !important;
+    }
+
+#mapDiv {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+
+.ui-dialog-contain {
+    margin-top: 2em;
+}
+
+.ui-loader {
+    top: 70px;
+    left: 27px;
+    z-index: 1000; /* sidePanel.z-idnex=10001 // original: 9999999; */
+}
+
+.mv-map-messages {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+}
+
+.mv-map-message {
+    float: right;
+    background-color: rgba(144,144,144,0.4);
+    padding: 0.1em 1em;
+    margin: 0.5em;
+    /* cursor: default; */
+    font-size: 1em;
+    max-width: 80%;
+
+    overflow: hidden;
+    /*  word-wrap: break-word; */
+    white-space: nowrap; /* nowrap normal */
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+
+    .mv-map-message img {
+        height: 1em;
+        margin-bottom: -0.2em;
+    }
+
+    .mv-map-message p, li, span {
+        max-width: 40em;
+        margin: 0;
+    }
+
+    .mv-map-message span a,
+    .mv-map-message span a:hover,
+    .mv-map-message span a:visited {
+        color: #333 !important;
+        text-decoration: none !important;
+    }
+
+
+#mapLogDialogList .ui-li-desc strong {
+    text-overflow: initial;
+    overflow: auto;
+    white-space:normal;
+}
+
+/* ----------------------------------------------------------------------------------------------*/
+/* Icons */
+
+.ui-icon-mv-target,
+.ui-icon-mv-mapservices,
+.ui-icon-mv-grid,
+.ui-icon-mv-info,
+.ui-icon-mv-spechbubble {
+    background-size: 18px 18px;
+    padding-right: 1px;
+    border-radius: 0px!important;
+    -moz-border-radius: 0px!important;
+    -webkit-border-radius: 0px!important;
+    -ms-border-radius: 0px!important;
+    -o-border-radius: 0px!important;
+}
+
+
+/* IE8 tweak */
+.ui-icon-mv-target {
+    background-image: url("images/menu/target_icon18.png");
+}
+
+.ui-icon-mv-mapservices {
+    background-image: url("images/menu/layers_1_icon18.png");
+}
+
+.ui-icon-mv-grid {
+    background-image: url("images/menu/2x2_grid_icon18.png");
+}
+
+.ui-icon-mv-info {
+    background-image: url("images/menu/info_icon18.png");
+}
+
+.ui-icon-mv-spechbubble {
+    background-image: url("images/menu/spechbubble18.png");
+}
+
+
+@media (min-width: 1px) {
+    /* IE8 tweak */
+    .ui-icon-mv-target {
+        background-image: url("images/menu/target_icon.png");
+    }
+
+    .ui-icon-mv-mapservices {
+        background-image: url("images/menu/layers_1_icon.png");
+    }
+
+    .ui-icon-mv-grid {
+        background-image: url("images/menu/2x2_grid_icon.png");
+    }
+
+    .ui-icon-mv-info {
+        background-image: url("images/menu/info_icon.png");
+    }
+
+    .ui-icon-mv-spechbubble {
+        background-image: url("images/menu/spechbubble.png");
+    }
+}
+
+
+/* ----------------------------------------------------------------------------------------------*/
+/* bootstrap-responsive.css */
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.visible-phone {
+    display: none !important;
+}
+
+.visible-tablet {
+    display: none !important;
+}
+
+.hidden-desktop {
+    display: none !important;
+}
+
+.visible-desktop {
+    display: inherit !important;
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    .hidden-desktop {
+        display: inherit !important;
+    }
+
+    .visible-desktop {
+        display: none !important;
+    }
+
+    .visible-tablet {
+        display: inherit !important;
+    }
+
+    .hidden-tablet {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .hidden-desktop {
+        display: inherit !important;
+    }
+
+    .visible-desktop {
+        display: none !important;
+    }
+
+    .visible-phone {
+        display: inherit !important;
+    }
+
+    .hidden-phone {
+        display: none !important;
+    }
+}
+
+.visible-print {
+    display: none !important;
+}
+
+@media print {
+    .visible-print {
+        display: inherit !important;
+    }
+
+    .hidden-print {
+        display: none !important;
+    }
+}
+
+/* ----------------------------------------------------------------------------------------------*/
+

@@ -1,0 +1,4 @@
+﻿
+.ui-icon-mv-gps-location {
+    background-image: url("http://png-5.findicons.com/files/icons/2540/glyph_icons/32/locate.png") !important;/*I added the !important, I found that this rule was being overwritten*/
+}

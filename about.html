@@ -1,0 +1,97 @@
+﻿<!doctype html>
+<html manifest="mobile.manifest">
+<head>
+    <title>About Map Viewer</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+    <!-- Sets the style of the status bar for a web application. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+    <link rel="stylesheet" href="js/jquery.mobile-1.3.1.min.css" />
+    <link rel="stylesheet" href="js/jquery.mapviewer.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.mobile-1.3.1.min.js"></script>
+    
+    <script src="js-languative/languative.js"></script>
+    <script src="js-novotive/novotive.js"></script>
+    <script src="js-mapviewer/mapviewer.js"></script>
+    <script src="js-mapviewer/mapviewer-lang.js"></script>
+    <script src="js-mapviewer/mapviewer-config.js"></script>
+
+
+    <style type="text/css">
+    </style>
+
+    <script>        
+
+    </script>
+
+</head>
+<body>
+
+
+    <div id="aboutMapViewerDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h1 data-phrase-id="AboutPageHeader">About Map Viewer</h1>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" onclick="mapViewer.ui.showMap();"></a>
+        </div>
+        <div data-role="content">
+            <div data-role="collapsible-set" data-content-theme="d" data-theme="b"
+                data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+
+                <div data-role="collapsible" data-collapsed="false" data-content-theme="d">
+                    <h3><span data-phrase-id="Informations">Informations</span></h3>
+                    <p data-phrase-id="AboutMapViewerText">
+                        Map Viewer is a touch-optimized web application designed to make maps accessible on all popular smartphones, 
+                tablets and desktop devices. Map Viewer give you and your organization access to your maps 
+                and information wherever you are, at any time. Simply use the browser on your mobile device or on desktop machine 
+                to use online maps avaiable through web mapping services. All with no additional work.
+                    </p>
+                </div>
+
+                <div data-role="collapsible">
+                    <h3><span data-phrase-id="Contact">Contact</span></h3>
+                    <p data-phrase-id="AboutContactText">
+                        If You have any question, suggestion or you find something wrong with Map Viewer 
+                visit <a href="http://mapviewer.userecho.com/list/19930-ideas-and-questions/" target="_blank">Map 
+                Viewer Ideas and Questions forum</a>. 
+                    </p>
+                    <p data-phrase-id="AboutContactMail">
+                        I'm also available by email if you prefer:
+                        <br />
+                        <strong>kuba.szostak(₪)gmail.com</strong>
+                    </p>
+                </div>
+
+                <div data-role="collapsible" data-content-theme="d" data-theme="b">
+                    <h3><span data-phrase-id="UsedTechnologies">Used technologies</span></h3>
+                    <ul>
+                        <li><a href="https://github.com/Novotive/MapViewer" target="_blank">Map Viewer source code</a></li>
+                        <li><a href="http://developers.arcgis.com/en/javascript/" target="_blank">ArcGIS API for JavaScript</a></li>
+                        <li><a href="http://jquerymobile.com/" target="_blank">jQuery mobile</a></li>
+                        <li><a href="http://developers.google.com/appengine/" target="_blank">Google App Engine</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="#" data-role="button" data-rel="back" data-inline="true" data-icon="back" data-phrase-id="Close">Close</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--<div data-role="content">-->
+    </div>
+    <!--aboutMapViewerDialog-->
+
+</body>
+</html>

@@ -1,0 +1,284 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Metadata Viewer</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+    <!-- Sets the style of the status bar for a web application. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+    <link rel="stylesheet" href="js/jquery.mobile-1.3.2.min.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.mobile-1.3.2.min.js"></script>
+
+    <script src="js-languative/languative.js"></script>
+    <script src="js-novotive/novotive.js"></script>
+    <script src="js-metaviewer/metaviewer.js"></script>
+    <script src="js-metaviewer/metaviewer-lang.js"></script>
+    <script src="js-metaviewer/metaviewer-config.js"></script>
+
+
+    <style type="text/css">
+        .ui-collapsible-content {
+            padding: 0;
+        }
+
+        .ui-li-desc {
+        }
+
+        .description {
+            overflow: auto;
+            white-space: normal;
+            /* display: inline; */
+            text-align: justify;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        #recordsList .keywords {
+            color: gray;
+            margin-top: 0.6em;
+        }
+
+        #recordsList .details-button {
+            margin-top: 0.7em;
+        }
+
+        .ui-listview-filter {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    </style>
+
+    <script>        
+        
+    </script>
+
+</head>
+<body>
+
+    <div data-role="page" id="records">
+        <div data-role="header" style="overflow: hidden;" data-theme="c">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
+                <a href="index.html" data-role="button" data-iconpos="notext" data-icon="home" rel="external"
+                    class="ui-icon-alt"
+                    data-nvt-url="home"><span data-phrase-id="homePageTitle">Home</span></a>
+            </div>
+            <!--Title-->
+            <h1 data-phrase-id="pageTitle">Metadata Viewer</h1>
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+                <a href="#aboutDialog" data-role="button" data-iconpos="notext" data-icon="info"
+                    class="ui-icon-alt">About Metadata Viewer</a>
+            </div>
+        </div>
+        <!-- /header -->
+
+        <div id="recordsContent" data-role="content" style="max-width: 60em; margin-left: auto; margin-right: auto;">
+
+            <div id="recordsProgressContainer" >
+                <img src="images/loader-square.gif" class="center" />
+                <strong class="center" data-phrase-id="RequestingDataFromServer">Requesting data from server...
+                </strong>
+            </div>
+            <!--recordsProgressContainer-->
+
+
+            <div id="recordsErrorContainer" style="display: none;">
+                <h3 data-phrase-id="Error!">Error!</h3>
+                <p id="recordPageErrorDsc">Error message</p>
+            </div>
+            <!--recordsErrorContainer-->
+
+            <div id="recordsListContainer" style="">
+
+                <h3 data-phrase-id="Browse">Browse</h3>
+                <p id="recordsRecordsCountContainer" class="ui-bar-e" style="text-align: center; padding: 0.5em; display:none;" >
+                    <span data-phrase-id="RecordsShowing">Showing</span>
+                    <span id="recordsRecordsCount">100</span>
+                    <span data-phrase-id="RecordsOf">of</span>
+                    <span id="recordsResultsCount">999</span>
+                    <span data-phrase-id="RecordsSearchResults">search results</span>
+                </p>
+
+                <ul id="recordsList" data-role="listview" data-filter="true" data-filter-placeholder="" data-inset="true">
+                    <li>
+                        <h3>Loading...</h3>
+                        <div>
+                            <a href="metaviewer.html" data-role="button" 
+                                data-inline="true" data-icon="back" ><span>Back</span></a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!--recordsListContainer-->
+        </div>
+        <!--content-->
+
+
+    </div>
+    <!-- records -->
+
+    <div data-role="page" id="details">
+        <div data-role="header" style="overflow: hidden;" data-theme="c">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left">
+                <a href="metaviewer.html" data-role="button" data-icon="back"  data-transition="none"
+                    data-iconpos="notext" class="ui-icon-alt">Metadata Viewer</a>
+            </div>
+            <!--Title-->
+            <h1 data-phrase-id="DetailsTitle">Details</h1>
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+                <a href="#aboutDialog" data-role="button" data-iconpos="notext" data-icon="info"
+                    class="ui-icon-alt">About Metadata Viewer</a>
+            </div>
+        </div>
+        <!-- /header -->
+
+        <div id="detailsContent" data-role="content" style="max-width: 60em; margin-left: auto; margin-right: auto;">
+
+            <p id="detailsDate" style="color: gray; float: right; font-size: 0.8em;"></p>
+            <div>
+                <h3 id="detailsTitle"></h3>
+            </div>
+            <p id="detailsAbstract"></p>
+
+            <p id="detailsProgressContainer">
+                <img src="images/loader-square.gif" class="center" />
+                <strong class="center" data-phrase-id="RequestingDataFromServer">Requesting data from server...
+                </strong>
+            </p>
+
+            <div id="detailsButtons">
+                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="info"
+                    title="Informations" rel="external" target="_blank" style="display: none"
+                    id="detailsInfoButton" data-phrase-id="detailsInfo">Informations</a>
+
+                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="edit"
+                    title="Order" rel="external" target="_blank" style="display: none"
+                    id="detailsOrderButton" data-phrase-id="detailsOrder">Order</a>
+
+                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="arrow-d"
+                    title="Download" rel="external" target="_blank" style="display: none"
+                    id="detailsDownloadButton" data-phrase-id="detailsDownload">Download</a>
+
+                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="arrow-d"
+                    title="Download ESRI ShapeFile (SHP)" rel="external" target="_blank" style="display: none"
+                    id="detailsDownloadShpButton" data-phrase-id="detailsDownloadShp">ShapeFile (SHP) &nbsp;</a>
+
+                <a href="#" data-role="button" data-inline="true" data-mini="true" data-icon="search"
+                    title="Search" rel="external" target="_blank" style="display: none"
+                    id="detailsSearchButton" data-phrase-id="detailsSearch">Search</a>
+            </div>
+            <ul id="detailsList" data-role="listview" data-inset="true">
+            </ul>
+
+
+            <a href="metaviewer.html" data-role="button" data-inline="true" data-icon="back" data-transition="none"
+                data-phrase-id="Back">Back</a>
+        </div>
+        <!--content-->
+
+
+    </div>
+    <!-- recordDetails -->
+
+
+
+    <div id="errorDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h1 data-phrase-id="ErrorTitle">Error</h1>
+        </div>
+        <div data-role="content">
+            <p id="errorDialogMsg">Error message</p>
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="metaviewer.html" data-role="button" data-inline="true" data-icon="back"  data-transition="none"
+                            data-phrase-id="Close">Close</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--<div data-role="content">-->
+    </div>
+    <!--errorDialog-->
+
+    <div id="load" data-role="page" style="padding-top: 3em;">
+        <img src="images/loader-square.gif" class="center" />
+        <strong class="center" data-phrase-id="RequestingDataFromServer">Requesting data from server...
+        </strong>        
+    </div>
+
+
+    <div id="aboutDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h1 data-phrase-id="AboutPageHeader">About Metadata Viewer</h1>
+        </div>
+        <div data-role="content">
+            <p data-phrase-id="AboutMapViewerText" style="text-align: justify;">
+                Metadata Viewer allows you to browse ISO/INSPIRE metadata informations  available through 
+                <a href="http://www.opengeospatial.org/standards/cat" target="_blank">Catalog Service for the Web</a><br />
+            </p>
+            <p id="AboutDialogCswUrl" style="color: gray;"></p>
+            <p>Metadata Viewer is part of <a href="index.html" rel="external">Map Viewer</a> application.</p>
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="metaviewer.html"  data-role="button" data-inline="true" data-icon="back"  
+                            data-phrase-id="Close">Close</a>
+                    </div>
+                    <p data-nvt-version="" class="ui-li-aside"></p>
+                </li>
+            </ul>
+        </div>
+        <!--<div data-role="content">-->
+    </div>
+
+    <!--aboutDialog-->
+    <div id="links" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header" data-theme="d">
+            <h1>Links</h1>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <a href="http://mapviewer.org" target="_blank" rel="external">mapviewer.org</a>
+                </li>
+                <li>
+                    <a href="http://novotive.com" target="_blank" rel="external">nocotive.com</a>
+                </li>
+                <li>
+                    <a href="http://gis.umgdy.gov.pl" target="_blank" rel="external">gis.umgdy.gov.pl</a>
+                </li>
+                <li>
+                    <a href="https://github.com/kubaszostak/languative" target="_blank" rel="external">Languative</a>
+                </li>
+                <li>
+                    <a href="http://kubaszostak.github.io" target="_blank" rel="external">Kuba Szostak</a>
+                </li>
+                <li>
+                    <a href="http://kubaszostak.github.io/" target="_blank" rel="external">Jakub Szostak</a>
+                </li>
+                <li>
+                    <div>
+                        <a href="#" data-role="button" onclick="mapViewer.ui.showMap();" data-inline="true" data-icon="back" data-phrase-id="Close">Close</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--links-->
+
+</body>
+</html>

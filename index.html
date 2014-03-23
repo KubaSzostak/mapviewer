@@ -1,79 +1,570 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html>
+<head>
+    <title>Map Viewer</title>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Mapviewer : Web based viewer for on-line maps (WMS, WMTS, ArcGIS, KML, ...)" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <!-- Sets the style of the status bar for a web application. -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-    <title>Mapviewer</title>
-  </head>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
 
-  <body>
+    <link rel="stylesheet" href="js/jquery.mobile-1.3.2.min.css" />
+    <link rel="stylesheet" href="js/jquery.mapviewer.css" />
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/jquery.mobile-1.3.2.min.js"></script>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/kubaszostak/mapviewer">View on GitHub</a>
-
-          <h1 id="project_title">Mapviewer</h1>
-          <h2 id="project_tagline">Web based viewer for on-line maps (WMS, WMTS, ArcGIS, KML, ...)</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/kubaszostak/mapviewer/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/kubaszostak/mapviewer/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
-
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
-
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
-
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
-
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
-
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
-
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
-
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
-
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
-
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-      </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Mapviewer maintained by <a href="https://github.com/kubaszostak">kubaszostak</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+<!--    
+    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css" />
+    <script src="http://js.arcgis.com/3.6compact/"></script>
+-->
+    
+    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/js/esri/css/esri.css" />
+    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact"></script>
 
     
+    <link rel="stylesheet" href="mapviewer.css" />
+    <script src="js-languative/languative.js"></script>
+    <script src="js-novotive/novotive.js"></script>
+    <script src="js-novotive/novotive-map-services.js"></script>
+    <script src="js-mapviewer/mapviewer.js"></script>
+    <script src="js-mapviewer/mapviewer-lang.js"></script>
+    <script src="js-mapviewer/mapviewer-config.js"></script>
 
-  </body>
+    <script>        
+
+    </script>
+
+</head>
+<body>
+    <div data-role="page" id="map">
+        <div data-role="header" style="overflow: hidden;" data-theme="c">
+            <!--Phone sidebar menu-->
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left visible-phone" >
+                <a href="#menuPanel" data-role="button" data-iconpos="notext" data-icon="bars" 
+                    class="ui-icon-alt"><span data-phrase-id="Menu">Menu</span></a>
+            </div>
+            <!--Desktop header menu-->
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left hidden-phone">
+
+                <a onclick="mapViewer.geolocation.showLocation();" data-role="button" data-icon="mv-target"
+                    data-iconpos="notext" class="ui-icon-nodisc">Show my location</a>
+
+                <a href="#mapServicesPanel" data-role="button" data-icon="mv-mapservices"
+                    data-iconpos="notext" class="ui-icon-nodisc">Map services</a>
+
+                <a href="#basemapsPanel" data-role="button" data-icon="mv-grid" data-iconpos="notext"
+                    class=" ui-icon-nodisc ui-icon-noradius" data-iconshadow="false">Change basemap</a>
+
+                <a href="#about" data-role="button" data-icon="mv-info" 
+                    data-iconpos="notext" class="ui-icon-nodisc">About Map Viewer</a>
+            </div>
+            <!--Title-->
+            <h1 data-phrase-id="Title">Map Viewer</h1>
+            <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
+                <a onclick="mapViewer.ui.zoomInOut(+1);" data-role="button" data-iconpos="notext" data-icon="plus" class="ui-icon-alt">Zoom in</a>
+                <a onclick="mapViewer.ui.zoomInOut(-1);" data-role="button" data-iconpos="notext" data-icon="minus" class="ui-icon-alt">Zoom out</a>
+            </div>
+        </div>
+        <!-- /header -->
+        <div data-role="content">
+            <div id="mapDiv">
+                <div class="mv-map-messages">
+                    <p id="mapMessageContainer" class="mv-map-message" style="display: none;" onclick="mapViewer.ui.showLog();">
+                        <span>
+                            <span id="mapErrorsCountContainer" style="display: none; white-space: nowrap;">
+                                <img src="images/cancel.png" />
+                                <span id="mapErrorsCount">6</span> |
+                            </span><span id="mapWarningsCountContainer" style="display: none; white-space: nowrap;">
+                                <img src="images/alert.png" />
+                                <span id="mapWarningsCount">22</span> |
+                            </span>
+                        </span><span id="mapMessage">MapViewer error!
+                        </span>
+                    </p>
+                </div>
+
+                <div id="progress" class="progress hidden"></div>
+            </div>
+        </div>
+
+
+        <div data-role="panel" id="menuPanel" data-position="left" data-display="overlay" data-icon="false">
+            <ul data-role="listview">
+                <li data-icon="back" data-theme="b">
+                    <a href="#map" data-rel="close" data-phrase-id="Menu" >Menu</a>
+                </li>
+                <li data-icon="false">
+                    <a onclick="mapViewer.geolocation.showLocation();" data-rel="close">
+                        <img src="images/menu/target_icon.png" class="ui-li-icon" />
+                        <span data-phrase-id="ShowMyLocation">Show my location</span>
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#mapServicesPanel">
+                        <img src="images/menu/layers_1_icon.png" class="ui-li-icon" />
+                        <span data-phrase-id="MapServices">Map services</span>
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#basemapsPanel">
+                        <img src="images/menu/2x2_grid_icon.png" class="ui-li-icon" />
+                        <span data-phrase-id="ChangeBasemap">Change basemap</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="http://mapviewer.userecho.com/list/19930-ideas-and-questions/"
+                        target="_blank" onclick="$('#menuPanel').panel('close');">
+                        <img src="images/menu/spechbubble.png" class="ui-li-icon" />
+                        <span data-phrase-id="IdeasAndQuestions">Ideas and Questions</span>
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#about" >
+                        <img src="images/menu/info_icon.png" class="ui-li-icon" />
+                        <span data-phrase-id="AboutMapViewer">About Map Viewer</span>
+                    </a>
+                </li>
+            </ul>
+
+            
+
+
+        </div>
+        <!--menuPanel-->
+
+
+
+
+        <div data-role="panel" id="basemapsPanel" data-display="overlay" data-position-fixed="true">
+            <ul data-role="listview">
+                <li data-icon="back" data-theme="b">
+                    <a  href="#map" data-rel="close"  data-phrase-id="ChangeBasemap">Change basemap</a>
+                </li>
+                <li data-icon="false">
+                    <a href="#map"  onclick="mapViewer.map.setBasemap('topo');" data-rel="close">
+                        <img src="images/bm_topo.jpg">
+                        <h2 data-phrase-id="Topographic">Topographic</h2>
+                        <!--<p><strong>World street basemap</strong></p>-->
+                        <p data-phrase-id="BasemapsTopographicDescription">Administrative boundaries, cities, water features, physiographic features, parks, landmarks, highways, roads, railways, airports and more...</p>
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#map"  onclick="mapViewer.map.setBasemap('streets');" data-rel="close">
+                        <img src="images/bm_streets.jpg">
+                        <h2 data-phrase-id="Streets">Streets</h2>
+                        <!--<p><strong>World street basemap</strong></p>-->
+                        <p data-phrase-id="BasemapsStreetsDescription">Highways, roads, railways, cities, administrative boundaries, water features, parks, and landmarks, overlaid on shaded relief for added context. The map also includes building footprints for selected areas in the United States and Europe.</p>
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#map"  onclick="mapViewer.map.setBasemap('hybrid');" data-rel="close">
+                        <img src="images/bm_imagery.jpg">
+                        <h2 data-phrase-id="Imagery">Imagery</h2>
+                        <!--<p><strong>Imagery for the world</strong></p>-->
+                        <p data-phrase-id="BasemapsImageryDescription">Satellite and high-resolution (1m) aerial imagery for the world.</p>
+                    </a>
+                </li>
+                <li data-icon="false">
+                    <a href="#map" onclick="mapViewer.map.setBasemap('gray');" data-rel="close">
+                        <img src="images/bm_gray.png">
+                        <h2 data-phrase-id="GrayCanvas">Gray Canvas</h2>
+                        <!--<p><strong>Neutral background basemap</strong></p>-->
+                        <p data-phrase-id="BasemapsGrayCanvasDescription">Minimal colors, labels, and features. Only key information is represented to provide geographic context, allowing your data to come to the foreground. </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div data-role="panel" id="mapServicesPanel" data-position="left" data-display="overlay">
+
+            <ul id="mapServicesList" data-role="listview">
+                <li data-icon="back" data-theme="b">
+                    <a  href="#map" data-rel="close"   data-phrase-id="MapServices">Map services</a>
+                </li>
+                <li data-icon="false">
+                    <!--style="display: none;"-->
+                    <a href="#mapServiceAddDialog">
+                        <img src="images/menu/layers_2_icon.png" class="ui-li-icon" />
+                        <span data-phrase-id="MapServicesAdd">Add map service</span>
+                    </a>
+                </li>
+            </ul>
+
+
+            <div data-role="popup" id="mapServiceAction" data-theme="d">
+                <ul data-role="listview" data-inset="true" style="min-width: 210px;" data-theme="d">
+                    <li data-icon="back" data-theme="b"><a href="#map"  data-phrase-id="MapServiceActionsHeader">Choose an action
+                    </a></li>
+
+
+                    <!--                    
+    <li data-icon="arrow-u"><a  onClick="mapViewer.mapServices.moveUp();" data-phrase-id="MoveUp">Move up
+                    </a></li>
+                    <li data-icon="arrow-d"><a  onClick="mapViewer.mapServices.moveDown();" data-phrase-id="MoveDown">Move down
+                    </a></li>
+    -->
+
+                    <li data-icon="delete"><a onclick="mapViewer.mapServices.deleteSelectedMapService();" style="color: maroon;" data-phrase-id="Delete">Delete
+                    </a></li>
+                    <li data-icon="edit"><a onclick="mapViewer.mapServices.showLayersDialog();" data-phrase-id="MapServceSettings" data-rel="popup" data-position-to="window">Map Settings
+                    </a></li>
+                </ul>
+            </div>
+
+        </div>
+        <!--mapServicesPanel-->
+
+         
+
+    </div>
+    <!-- map-page -->
+    
+    
+    <div id="about" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h1 data-phrase-id="AboutPageHeader">About Map Viewer</h1>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
+        </div>
+        <div data-role="content">
+            <div data-role="collapsible-set" data-content-theme="d" data-theme="b"
+                data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+
+                <div data-role="collapsible" data-collapsed="false" >
+                    <h3><span data-phrase-id="Informations">Informations</span></h3>
+                    <p data-phrase-id="AboutMapViewerText">
+                        Map Viewer is a touch-optimized web application designed to make maps accessible on all popular smartphones, 
+                tablets and desktop devices. Map Viewer give you and your organization access to your maps 
+                and information wherever you are, at any time. Simply use the browser on your mobile device or on desktop machine 
+                to use online maps avaiable through web mapping services. All with no additional work.
+                    </p>
+                </div>
+
+                <div data-role="collapsible">
+                    <h3><span data-phrase-id="Contact">Contact</span></h3>
+                    <p data-phrase-id="AboutContactText">
+                        If You have any question, suggestion or you find something wrong with Map Viewer 
+                visit <a href="http://mapviewer.userecho.com/list/19930-ideas-and-questions/" target="_blank">Map 
+                Viewer Ideas and Questions forum</a>. 
+                    </p>
+                    <p data-phrase-id="AboutContactMail">
+                        I'm also available by email if you prefer:
+                        <br /><strong>kuba.szostak@gmail.com</strong>
+                    </p>
+                </div>
+
+                <div data-role="collapsible"  >
+                    <h3><span data-phrase-id="UsedTechnologies">Used technologies</span></h3>
+                    <ul>
+                        <li><a href="http://mapviewer.org" target="_blank">Map Viewer home page</a></li>
+                        <li><a href="https://github.com/kubaszostak/mapviewer" target="_blank">Map Viewer source code</a></li>
+                        <li><a href="http://js.arcgis.com" target="_blank">ArcGIS API for JavaScript</a></li>
+                        <li><a href="http://jquerymobile.com/" target="_blank">jQuery mobile</a></li>
+                        <li><a href="http://developers.google.com/appengine/" target="_blank">Google App Engine</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="#map" data-role="button"  data-inline="true" data-icon="back" data-phrase-id="Close">Close</a>
+                    </div>
+                    <p data-nvt-version="" class="ui-li-aside"></p>
+                </li>
+            </ul>
+        </div>
+        <!--<div data-role="content">-->
+    </div>
+    <!--about-->
+
+
+    <div id="browserSupportWarning" data-role="page">
+        <div data-role="header">
+            <h1 data-phrase-id="Title">Map Viewer</h1>
+        </div>
+        
+        <div data-role="content" style="max-width: 45em; margin-left: auto; margin-right: auto;">
+            <img src="images/alert.png" style="float: right;" />
+            <h2 data-phrase-id="YourBrowserNotSupported" >Your browser is not supported</h2>
+            <p data-phrase-id="BrowserNotSupportedInfo" >
+                Some Map Viewer features are not supported by Your web browser. 
+                There are many modern browsers... but You not use them. Please consider
+                changing Your web browser to newer one, that support new web development standarts.
+            </p>
+            <div>
+                <a href="http://www.whatbrowser.org/" data-role="button" target="_blank" data-inline="true" 
+                    data-icon="forward" data-phrase-id="UpdateWebBrowser" data-theme="b">Update browser</a>
+
+                <a href="#map" data-role="button" data-inline="true" 
+                    data-icon="alert" data-theme="e" data-phrase-id="GoToMapViewer" >Go to Map Viewer</a>
+            </div>
+        </div>
+    </div>
+    <!--browserSupportWarning-->
+
+
+
+    <div id="progressDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="content">
+            <!--<img src="js/images/ajax-loader.gif"  style="float: left; background-color: transparent; color:transparent;" />-->
+
+            <img src="images/loader-square.gif" style="display: block; margin-left: auto; margin-right: auto; width: 64px; height: auto; margin-top: 3em; margin-bottom: 3em;" />
+        </div>
+        <!--content-->
+    </div>
+    <!--progressDialog-->
+
+
+    <div id="links" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header" data-theme="d">
+            <h1>Links</h1>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <a href="http://mapviewer.org" target="_blank" rel="external">mapviewer.org</a>
+                </li>
+                <li>
+                    <a href="http://novotive.com" target="_blank" rel="external">nocotive.com</a>
+                </li>
+                <li>
+                    <a href="http://gis.umgdy.gov.pl" target="_blank" rel="external">gis.umgdy.gov.pl</a>
+                </li>
+                <li>
+                    <a href="https://github.com/kubaszostak/languative" target="_blank" rel="external">Languative</a>
+                </li>
+                <li>
+                    <a href="http://kubaszostak.github.io" target="_blank" rel="external">Kuba Szostak</a>
+                </li>
+                <li>
+                    <a href="http://kubaszostak.github.io/" target="_blank" rel="external">Jakub Szostak</a>
+                </li>
+                <li>
+                    <div>
+                        <a href="#" data-role="button" onclick="mapViewer.ui.showMap();" data-inline="true" data-icon="back" data-phrase-id="Close">Close</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!--links-->
+
+    
+    <div id="langDictionary" data-role="page">
+
+        <div data-role="header" data-theme="d">
+            <h1>Default (english) language dictionary</h1>
+        </div>
+
+        <div data-role="content">
+            <h3>Lang dictionary in JSON format usedy by Map Viewer</h3>
+            <p>
+                <pre id="langDictionaryContent" style="overflow: auto"><img src="images/loading.gif" />Loading lang dictionary content from HTML code...</pre>
+            </p>
+            <a data-role="button" href="#map">OK</a>
+        </div>
+    </div>
+    <!-- langDictionary -->
+
+    <div id="mapServiceLayersDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h2 data-phrase-id="MapServiceSettings">Map Settings</h2>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
+        </div>
+        <div data-role="content">
+            <ul data-role="listview" data-inset="true" data-icon="info">
+                <li><a href="#">
+                    <h4 id="MapServiceDialogDisplayTitle">Service DisplayTitle</h4>
+                    <p id="MapServiceDialogTitle" style="font-weight: bold">Service Title</p>
+                    <p id="MapServiceDialogDescription">Service Description</p>
+                    <p id="MapServiceDialogUrl" style="color: gray;">Service Url</p>
+                </a>
+                </li>
+            </ul>
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1.5em;">
+                <li data-role="list-divider" data-phrase-id="VisibleLayers">Visible layers</li>
+                <li>
+                    <form>
+                        <fieldset id="MapServiceDialogLayers" data-role="controlgroup" data-iconpos="right" data-mini="true">
+                            <legend></legend>
+                            <input type="checkbox" name="checkbox1" id="checkbox1">
+                            <label for="checkbox1">checkbox1</label>
+                            <input type="checkbox" name="checkbox2" id="checkbox2">
+                            <label for="checkbox2">checkbox2</label>
+                        </fieldset>
+                    </form>
+                </li>
+                <li>
+                    <div>
+                        <a href="#map" data-role="button"  data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Cancel">Cancel</a>
+                        <a data-role="button" data-inline="true" data-icon="check" data-theme="b" onclick="mapViewer.mapServices.showLayersDialogSave()" data-phrase-id="Save"> Save </a>
+                    </div>
+                </li>
+            </ul>
+
+            <div>
+            </div>
+
+        </div>
+        <!--content-->
+    </div>
+    <!--mapServiceLayersDialog-->
+
+    <div id="mapServiceAddDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h2 data-phrase-id="AddMapServiceTitle">Add map service</h2>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
+        </div>
+        <div data-role="content">
+
+            <div data-role="collapsible-set" data-theme="b" data-content-theme="d" data-collapsed-icon="arrow-r" data-expanded-icon="arrow-d">
+
+                <div data-role="collapsible" data-collapsed="false">
+                    <h2 data-phrase-id="CustomMapService">Custom map service</h2>
+                    <div>
+                        <form>
+                            <label for="mapServiceAddDialogUrl">Map service address</label>
+                            <input type="url" name="mapServiceAddDialogUrl" id="mapServiceAddDialogUrl" placeholder="http://" data-clear-btn="true" />
+                            <a href="#" data-transition="slide" data-role="button" data-inline="true" 
+                                data-theme="b" data-icon="plus" onclick="mapViewer.mapServices.addDialogGetMetadata()" data-phrase-id="Add">Add</a>
+                        </form>
+
+                    </div>
+                </div>
+                
+                <div data-role="collapsible" data-theme="b" data-content-theme="c" >
+                    <h2 data-phrase-id="SampleMapServicesList">Map services list</h2>
+                    <ul data-role="listview" data-filter="true" data-icon="plus" class="ui-icon-alt">
+                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer', 'Sample ESRI WMS server');">
+                            <h3>Sample ESRI WMS server</h3>
+                            <p>Specialty/ESRI_StatesCitiesRivers_USA</p>
+                            <p style="color: gray;">http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer</p>
+                        </a></li>
+                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://gis.umgdy.gov.pl/geoserver/wms', 'Urząd Morski w Gdyni');">
+                            <h3>Urząd Morski w Gdyni</h3>
+                            <p>WMS Urzędu Morskiego w Gdyni</p>
+                            <p style="color: gray;">http://gis.umgdy.gov.pl/geoserver/wms</p>
+                        </a></li>
+                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://wms.gdos.gov.pl/geoserver/wms', 'GDOŚ WMS');">
+                            <h3>GDOŚ WMS</h3>
+                            <p>Usługa przeglądania (WMS) Generalnej Dyrekcji Ochrony Środowiska</p>
+                            <p style="color: gray;">http://wms.gdos.gov.pl/geoserver/wms</p>
+                        </a></li>
+                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://www.bdl.info.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer', 'Bank Danych o Lasach');">
+                            <h3>Bank Danych o Lasach</h3>
+                            <p>Usługa przeglądania (WMS) danych Banku Danych o Lasach</p>
+                            <p style="color: gray;">http://www.bdl.info.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer</p>
+                        </a></li>
+                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://mapy.geoportal.gov.pl/wss/service/pub/guest/G2_GO_WMS/MapServer/WMSServer', 'Dane o charakterze katastralnym');">
+                            <h3>Dane o charakterze katastralnym</h3>
+                            <p>Usługa przeglądania (WMS) Głównego Urzędu Geodezji i Kartografii</p>
+                            <p style="color: gray;">http://mapy.geoportal.gov.pl/wss/service/pub/guest/G2_GO_WMS/MapServer/WMSServer</p>
+                        </a></li>
+
+                        
+                        
+                    </ul>
+                </div>
+
+            </div>
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="#map" data-role="button" data-inline="true" data-icon="back" data-phrase-id="Cancel">Cancel</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--content-->
+    </div>
+    <!--mapServiceAddDialog-->
+
+
+
+    <div id="mapServiceSelectDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h2 data-phrase-id="AddMapServiceTitle">Add map service</h2>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
+        </div>
+        <div data-role="content">
+            <label for="mapServiceSelectDialogServiceTitle" data-phrase-id="MapServiceTitle">Map service title</label>
+            <input type="text" name="mapServiceSelectDialogServiceTitle" id="mapServiceSelectDialogServiceTitle" value="">
+            <p id="mapServiceSelectDialogServiceUrl" style="color: gray; font-size: small;" class="singleline">https://docs.google.com/document/d/1Z9_lGDASKxd1YeXQeYr9N5CRUeroe</p>
+
+            <ul data-role="listview" data-inset="true" data-divider-theme="d">
+                <li data-role="list-divider" data-phrase-id="SelectMapServiceType">Select Map Service</li>
+                <li><a href="#" onclick="mapViewer.mapServices.addDialogAddMapService(0);">Web Map Service (WMS)</a></li>
+            </ul>
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="#map" data-role="button"  data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Cancel">Cancel</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <!--content-->
+    </div>
+    <!--mapServiceSelectDialog-->
+
+    <div id="mapLogDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
+        <div data-role="header">
+            <h2 data-phrase-id="MapViewerLog">MapViewer log</h2>
+            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
+        </div>
+        <div data-role="content">
+            <!--//delete, alert, info-->
+            <ul id="mapLogDialogList" data-role="listview" data-inset="true" data-divider-theme="d" class="ui-icon-alt" data-icon="false">
+                <li data-role="list-divider" data-phrase-id="Errors">Errors</li>
+                <li><a href="#">
+                    <p><strong>Web Map Service (WMS)</strong></p>
+                    <p>Web Map Service (WMS)</p>
+                    <p>Web Map Service (WMS)</p>
+                    <p>
+                        aaaaa data-role="listview" data-inset="true" data-divider-theme="d" data-role="listview" data-inset="true" data-divider-theme="d"
+                        <br />
+                        bbbb<br />
+                        aaaaa data-role="listview" data-inset="true" data-divider-theme="d" data-role="listview" data-inset="true" data-divider-theme="d"
+                        <br />
+                        bbbb<br />
+                    </p>
+                    <p>Web Map Service (WMS)</p>
+
+                </a></li>
+                <li><a href="#">Web Map Tile Service (WMTS)</a></li>
+                <li><a href="#">ArcGIS Dynamic Map Service</a></li>
+                <li data-role="list-divider" data-phrase-id="Warnings" data-icon="plus">Warnings</li>
+                <li><a href="#">ArcGIS Dynamic Map Service</a></li>
+
+                <li data-role="list-divider" data-phrase-id="Informations" data-icon="plus">Informations</li>
+                <li><a href="#">ArcGIS Dynamic Map Service</a></li>
+                <li><a href="#">ArcGIS Dynamic Map Service</a></li>
+            </ul>
+
+
+            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
+                <li>
+                    <div>
+                        <a href="#map" data-role="button"  data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Close">Close</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--content-->
+    </div>
+    <!--mapErrorsDialog-->
+
+
+
+</body>
 </html>
