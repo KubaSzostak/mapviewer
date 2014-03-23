@@ -17,7 +17,7 @@
     Kuba Szostak
   </author>
   
-  <icon src="map.png" />
+  <icon src="mapviewer.png" />
   <preference name="permissions" value="none"/>
   <preference name="exit-on-suspend" value="false" />
 
