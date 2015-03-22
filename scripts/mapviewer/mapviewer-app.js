@@ -230,6 +230,13 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
             novotive.log.addLogEventListener(mapViewerApp.ui.showLogMessage);
             // when all event listeners are set you can add map services
             mapServices.addMapServices(config.mapServices);
+            ui.bindClick("toolbarPrintButton", function () {
+                window.print();
+            });
+            ui.bindClick("menuPanelPrintButton", function () {
+                window.print();
+                ui.showMap();
+            });
         }
         mapViewerApp.init = init;
         // ----------------------------------------------------------------------------------------
@@ -264,6 +271,17 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                 tag.css("display", cssDisplay);
             }
             ui.setInnerHtml = setInnerHtml;
+            function bindClick(id, clickFunc) {
+                var elem = jQuery("#" + id);
+                elem.bind("click", function (e) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                    clickFunc();
+                    elem.removeClass("ui-btn-active");
+                    elem.removeClass("ui-focus");
+                });
+            }
+            ui.bindClick = bindClick;
             function showLogMessage(rec, log) {
                 jQuery("#mapErrorsCount").text(novotive.log.errorsLog.length);
                 jQuery("#mapWarningsCount").text(novotive.log.warningsLog.length);

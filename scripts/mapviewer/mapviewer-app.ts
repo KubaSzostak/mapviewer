@@ -61,7 +61,6 @@ esri_config.defaults.io.proxyUrl = "http://proxy-ksz.rhcloud.com/proxy.jsp";
 
 
 
-
 export module mapViewerApp {
 
     export var map: Map = null;
@@ -321,7 +320,15 @@ export module mapViewerApp {
 		// when all event listeners are set you can add map services
 		mapServices.addMapServices(config.mapServices);
 
+		ui.bindClick("toolbarPrintButton", () => {
+			window.print();
+		});
+		ui.bindClick("menuPanelPrintButton",() => {
+			window.print();
+			ui.showMap();
+		});
 	}
+	
 	
     // ----------------------------------------------------------------------------------------
 
@@ -356,6 +363,17 @@ export module mapViewerApp {
             tag.html(html);
             tag.css("display", cssDisplay);
         }
+
+		export function bindClick(id: string, clickFunc) {
+			var elem = jQuery("#" + id);
+			elem.bind("click", function (e) {
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				clickFunc();
+				elem.removeClass("ui-btn-active");
+				elem.removeClass("ui-focus");
+			});
+		}
 
         export function showLogMessage(rec: novotive.log.LogRecord, log: Array<novotive.log.LogRecord>) {
 
