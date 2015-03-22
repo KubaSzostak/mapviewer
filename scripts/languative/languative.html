@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Languative demo</title>
+    <!--<script src="https://raw.github.com/Novotive/Languative/master/languative.js"></script>-->
+    <script src="languative.js"></script>
+    
+    <script>        
+        // "html" is default dictinary loaded from html code
+        // in this example "html" language equals to english.
+        // If there is no active language dictionary then "html"
+        // language will be used
+
+        languative.modifyDictionary("html", {
+            githubLink: "Fork me on GitHub"
+        });
+
+        // You dont have to modify "en" dictionary - it is loaded directly from html code.
+        // Thre is only "pl" and "de" dictionary. All other languages will use default "html" dictionary
+
+        languative.modifyDictionary("pl", {
+            welcomeMessage: "Witaj na stronie testowej Languative",
+            selectLanguage: "Możesz wybrać język przez kliknięcie linków poniżej",
+            english: "Angielski (English)",
+            polish: "Polski",
+            german: "Niemiecki"
+            //undefined: "Przykład nieprzypisanej frazy"
+        });
+        languative.modifyDictionary("de", {
+            welcomeMessage: "Willkommen auf languative Demo-Seite",
+            selectLanguage: "Sie können Sprache, indem Sie auf Links unten verändern",
+            english: "Englisch (English)",
+            polish: "Polnisch",
+            german: "Deutsch"
+            //undefined: "Przykład nieprzypisanej frazy"
+        });
+
+        function loadHtmlDictionary() {
+            document.getElementById("htmlDictionary").innerText = JSON.stringify(languative.dictonaries.html, null, "  ");
+        }
+
+        function loadActiveDictionary() {
+            document.getElementById("activeDictionary").innerText = JSON.stringify(languative.getDictionaryFromHtml(), null, "  ");
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Languative demo</h1>
+    <p><strong data-phrase-id="welcomeMessage">Welcome on languative demo page</strong></p>
+    <p data-phrase-id="selectLanguage">You can change language by clicking links below</p>
+    <ul>
+        <li><a href="#" onclick="languative.changeLanguage('en');" data-phrase-id="english">English</a></li>
+        <li><a href="#" onclick="languative.changeLanguage('pl')" data-phrase-id="polish">Polish</a></li>
+        <li><a href="#" onclick="languative.changeLanguage('de')" data-phrase-id="german">German</a></li>
+        <li><a href="#" onclick="languative.changeLanguage('und')" data-phrase-id="undefinedLang">Undefined</a></li>
+    </ul>
+    
+    <hr />
+
+    <p>Languative loads at startup defaults dictionary from html code. This dictionary is
+        called "html". If Languative cannot recognize active languagi it will use this default
+        "html" dictinary. So  You dont have to modify default dictionary (in this example "en"). Default dictionary
+        (named "html") is loaded directly from html code. In this sample  only "pl" and "de" dictionary
+        are defined in JavaScript code - all other languages will use default "html" dictionary
+
+    </p>
+
+    <hr />
+    <p>If languative cannot find data-phrase-id for selected language "html" language will be used</p>
+    <p data-phrase-id="undefinedPhrase">This is html phrase</p>
+     
+    <hr />
+    <p>You can change default "html" dictionary/language at javascript code: <br />
+        <code>
+        languative.modifyDictionary("html", {
+            githubLink: "Fork me on GitHub"
+        });
+        </code>
+    </p>
+    <a href="https://github.com/Novotive/Languative" data-phrase-id="githubLink" target="_blank">Go to github</a>
+
+    <hr />
+    <h3>View dictionary values</h3>
+    
+    <a href="#" onclick="loadHtmlDictionary()">Load 'html' dictionary</a>
+    <pre id="htmlDictionary">...</pre>
+
+    <a href="#" onclick="loadActiveDictionary()" >Load page dictionary</a> (it will change as You change active language)
+    <pre id="activeDictionary">...</pre>
+</body>
+</html>
