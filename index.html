@@ -7,42 +7,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
-
-    <!-- Sets the style of the status bar for a web application. -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="shortcut icon" type="image/x-icon" href="images/mapviewer.png">
 
-    <link rel="shortcut icon" type="image/x-icon" href="/mapviewer.png">
 
-    <link rel="stylesheet" href="js/jquery.mobile-1.3.2.min.css" />
-    <link rel="stylesheet" href="js/jquery.mapviewer.css" />
-    <script src="js/jquery-1.9.1.min.js"></script>
-    <script src="js/jquery.mobile-1.3.2.min.js"></script>
+	<!--jQuery Mobile CDN-->
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
+	
 
-<!--    
-    <link rel="stylesheet" href="http://js.arcgis.com/3.6/js/esri/css/esri.css" />
-    <script src="http://js.arcgis.com/3.6compact/"></script>
--->
-    
-    <link rel="stylesheet" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact/js/esri/css/esri.css" />
-    <script src="http://serverapi.arcgisonline.com/jsapi/arcgis/3.5compact"></script>
+	<!-- MapViewer -->
+	<link rel="stylesheet" href="scripts/mapviewer/mapviewer.css" />
+	<script src="scripts/languative/languative.js"></script>
+	<script src="scripts/novotive/novotive.js"></script>
+	<script src="scripts/mapviewer/mapviewer.js"></script>
+	<script src="scripts/mapviewer/mapviewer-config.js"></script>
+	<script src="scripts/mapviewer/mapviewer-lang.js"></script>
 
-    
-    <link rel="stylesheet" href="mapviewer.css" />
-    <script src="js-languative/languative.js"></script>
-    <script src="js-novotive/novotive.js"></script>
-    <script src="js-novotive/novotive-map-services.js"></script>
-    <script src="js-mapviewer/mapviewer.js"></script>
-    <script src="js-mapviewer/mapviewer-lang.js"></script>
-    <script src="js-mapviewer/mapviewer-config.js"></script>
+
+	<!--ArcGIS CDN-->
+	<link rel="stylesheet" href="//js.arcgis.com/3.13/esri/css/esri.css">
+	<script  src="http://js.arcgis.com/3.13/"></script>	
+
+
+	<!-- MapViewer scripts (depends on ArcGIS/dojo/AMD) -->
+	<script>
+	</script>
+
+	<!--PhoneGap (Android, iOS)-->
     <script src="phonegap.js"></script>
 
-    <script>        
 
-    </script>
+	<script>
+		
+		var mapViewerFrameworkReady =
+			   !(typeof dojo === undefined)
+			&& !(typeof jQuery === undefined)
+			&& !(typeof jQuery.mobile === undefined)
+			&& !(typeof jQuery.support === undefined)
+			&& !(typeof jQuery.support.ajax === undefined)
+			&& !(typeof jQuery.support.cors === undefined)
+			&& !(typeof localStorage === undefined)
+			&& !(typeof esri === undefined)
+			&& !(typeof dojo === undefined);
+
+		if (!mapViewerFrameworkReady) {
+			window.location = "error.html";
+		}
+
+		//novotive.log.init();
+
+		require(["scripts/mapviewer/mapviewer-app.js"], function (mapViewerModule) {
+			mapViewer.app = mapViewerModule.mapViewerApp;
+			console.log("MapViewer application loaded.");
+		});
+
+	</script>
 
 </head>
 <body>
-    <div data-role="page" id="map">
+    <div data-role="page" id="map" style="min-height: 4em; min-width: 4em; background-color: silver;">
         <div data-role="header" style="overflow: hidden;" data-theme="c">
             <!--Phone sidebar menu-->
             <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left visible-phone" >
@@ -52,7 +77,7 @@
             <!--Desktop header menu-->
             <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left hidden-phone">
 
-                <a onclick="mapViewer.geolocation.showLocation();" data-role="button" data-icon="mv-target"
+                <a onclick="mapViewer.app.geolocation.showLocation();" data-role="button" data-icon="mv-target"
                     data-iconpos="notext" class="ui-icon-nodisc">Show my location</a>
 
                 <a href="#mapServicesPanel" data-role="button" data-icon="mv-mapservices"
@@ -67,15 +92,15 @@
             <!--Title-->
             <h1 data-phrase-id="Title">Map Viewer</h1>
             <div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">
-                <a onclick="mapViewer.ui.zoomInOut(+1);" data-role="button" data-iconpos="notext" data-icon="plus" class="ui-icon-alt">Zoom in</a>
-                <a onclick="mapViewer.ui.zoomInOut(-1);" data-role="button" data-iconpos="notext" data-icon="minus" class="ui-icon-alt">Zoom out</a>
+                <a onclick="mapViewer.app.ui.zoomInOut(+1);" data-role="button" data-iconpos="notext" data-icon="plus" class="ui-icon-alt">Zoom in</a>
+                <a onclick="mapViewer.app.ui.zoomInOut(-1);" data-role="button" data-iconpos="notext" data-icon="minus" class="ui-icon-alt">Zoom out</a>
             </div>
         </div>
         <!-- /header -->
         <div data-role="content">
-            <div id="mapDiv">
+            <div id="mapDiv" style="min-height: 5px; min-width: 5px;">
                 <div class="mv-map-messages">
-                    <p id="mapMessageContainer" class="mv-map-message" style="display: none;" onclick="mapViewer.ui.showLog();">
+                    <p id="mapMessageContainer" class="mv-map-message" style="display: none;" onclick="mapViewer.app.ui.showLog();">
                         <span>
                             <span id="mapErrorsCountContainer" style="display: none; white-space: nowrap;">
                                 <img src="images/cancel.png" />
@@ -100,7 +125,7 @@
                     <a href="#map" data-rel="close" data-phrase-id="Menu" >Menu</a>
                 </li>
                 <li data-icon="false">
-                    <a onclick="mapViewer.geolocation.showLocation();" data-rel="close">
+                    <a onclick="mapViewer.app.geolocation.showLocation();" data-rel="close">
                         <img src="images/menu/target_icon.png" class="ui-li-icon" />
                         <span data-phrase-id="ShowMyLocation">Show my location</span>
                     </a>
@@ -130,10 +155,7 @@
                         <span data-phrase-id="AboutMapViewer">About Map Viewer</span>
                     </a>
                 </li>
-            </ul>
-
-            
-
+            </ul>   
 
         </div>
         <!--menuPanel-->
@@ -146,38 +168,30 @@
                 <li data-icon="back" data-theme="b">
                     <a  href="#map" data-rel="close"  data-phrase-id="ChangeBasemap">Change basemap</a>
                 </li>
-                <li data-icon="false">
-                    <a href="#map"  onclick="mapViewer.map.setBasemap('topo');" data-rel="close">
-                        <img src="images/bm_topo.jpg">
-                        <h2 data-phrase-id="Topographic">Topographic</h2>
-                        <!--<p><strong>World street basemap</strong></p>-->
-                        <p data-phrase-id="BasemapsTopographicDescription">Administrative boundaries, cities, water features, physiographic features, parks, landmarks, highways, roads, railways, airports and more...</p>
-                    </a>
+                <li data-icon="false" style="height: 77px;">
+                    <a href="#map"  onclick="mapViewer.app.map.setBasemap('topo');" data-rel="close">
+						<img src="http://js.arcgis.com/3.13/esri/images/basemap/topo.jpg">
+                        <h3 data-phrase-id="Topographic">Topographic</h3>
+					</a>
                 </li>
-                <li data-icon="false">
-                    <a href="#map"  onclick="mapViewer.map.setBasemap('streets');" data-rel="close">
-                        <img src="images/bm_streets.jpg">
-                        <h2 data-phrase-id="Streets">Streets</h2>
-                        <!--<p><strong>World street basemap</strong></p>-->
-                        <p data-phrase-id="BasemapsStreetsDescription">Highways, roads, railways, cities, administrative boundaries, water features, parks, and landmarks, overlaid on shaded relief for added context. The map also includes building footprints for selected areas in the United States and Europe.</p>
-                    </a>
-                </li>
-                <li data-icon="false">
-                    <a href="#map"  onclick="mapViewer.map.setBasemap('hybrid');" data-rel="close">
-                        <img src="images/bm_imagery.jpg">
-                        <h2 data-phrase-id="Imagery">Imagery</h2>
-                        <!--<p><strong>Imagery for the world</strong></p>-->
-                        <p data-phrase-id="BasemapsImageryDescription">Satellite and high-resolution (1m) aerial imagery for the world.</p>
-                    </a>
-                </li>
-                <li data-icon="false">
-                    <a href="#map" onclick="mapViewer.map.setBasemap('gray');" data-rel="close">
-                        <img src="images/bm_gray.png">
-                        <h2 data-phrase-id="GrayCanvas">Gray Canvas</h2>
-                        <!--<p><strong>Neutral background basemap</strong></p>-->
-                        <p data-phrase-id="BasemapsGrayCanvasDescription">Minimal colors, labels, and features. Only key information is represented to provide geographic context, allowing your data to come to the foreground. </p>
-                    </a>
-                </li>
+				<li data-icon="false" style="height: 77px;">
+					<a href="#map" onclick="mapViewer.app.map.setBasemap('streets');" data-rel="close">
+						<img src="http://js.arcgis.com/3.13/esri/images/basemap/streets.jpg">
+						<h3 data-phrase-id="Streets">Streets</h3>
+					</a>
+				</li>
+				<li data-icon="false" style="height: 77px;">
+					<a href="#map" onclick="mapViewer.app.map.setBasemap('hybrid');" data-rel="close">
+						<img src="http://js.arcgis.com/3.13/esri/images/basemap/hybrid.jpg">
+						<h3 data-phrase-id="Imagery">Imagery</h3>
+					</a>
+				</li>
+				<li data-icon="false" style="height: 77px;">
+					<a href="#map" onclick="mapViewer.app.map.setBasemap('gray');" data-rel="close">
+						<img src="http://js.arcgis.com/3.13/esri/images/basemap/gray.jpg">
+						<h3 data-phrase-id="GrayCanvas">Gray Canvas</h3>
+					</a>
+				</li>
             </ul>
         </div>
 
@@ -210,9 +224,9 @@
                     </a></li>
     -->
 
-                    <li data-icon="delete"><a onclick="mapViewer.mapServices.deleteSelectedMapService();" style="color: maroon;" data-phrase-id="Delete">Delete
+                    <li data-icon="delete"><a onclick="mapViewer.app.ui.deleteSelectedMapService();" style="color: maroon;" data-phrase-id="Delete">Delete
                     </a></li>
-                    <li data-icon="edit"><a onclick="mapViewer.mapServices.showLayersDialog();" data-phrase-id="MapServceSettings" data-rel="popup" data-position-to="window">Map Settings
+                    <li data-icon="edit"><a onclick="mapViewer.app.ui.showMapServiceSettings();" data-phrase-id="MapServceSettings" data-rel="popup" data-position-to="window">Map Settings
                     </a></li>
                 </ul>
             </div>
@@ -239,7 +253,7 @@
                     <h3><span data-phrase-id="Informations">Informations</span></h3>
                     <p data-phrase-id="AboutMapViewerText">
                         Map Viewer is a touch-optimized web application designed to make maps accessible on all popular smartphones, 
-                tablets and desktop devices. Map Viewer give you and your organization access to your maps 
+                tablets, laptops and desktop computers. Map Viewer give you and your organization access to your maps 
                 and information wherever you are, at any time. Simply use the browser on your mobile device or on desktop machine 
                 to use online maps avaiable through web mapping services. All with no additional work.
                     </p>
@@ -261,11 +275,11 @@
                 <div data-role="collapsible"  >
                     <h3><span data-phrase-id="UsedTechnologies">Used technologies</span></h3>
                     <ul>
-                        <li><a href="http://mapviewer.org" target="_blank">Map Viewer home page</a></li>
-                        <li><a href="https://github.com/kubaszostak/mapviewer" target="_blank">Map Viewer source code</a></li>
+                        <li><a href="http://kubaszostak.github.io/mapviewer/" target="_blank">Map Viewer home page</a></li>
+                        <li><a href="https://github.com/kubaszostak/mapviewer/" target="_blank">Map Viewer source code</a></li>
                         <li><a href="http://js.arcgis.com" target="_blank">ArcGIS API for JavaScript</a></li>
                         <li><a href="http://jquerymobile.com/" target="_blank">jQuery mobile</a></li>
-                        <li><a href="http://developers.google.com/appengine/" target="_blank">Google App Engine</a></li>
+                        <li><a href="https://www.openshift.com/" target="_blank">OpenShift by Red Hat</a></li>
                     </ul>
                 </div>
             </div>
@@ -284,29 +298,6 @@
     <!--about-->
 
 
-    <div id="browserSupportWarning" data-role="page">
-        <div data-role="header">
-            <h1 data-phrase-id="Title">Map Viewer</h1>
-        </div>
-        
-        <div data-role="content" style="max-width: 45em; margin-left: auto; margin-right: auto;">
-            <img src="images/alert.png" style="float: right;" />
-            <h2 data-phrase-id="YourBrowserNotSupported" >Your browser is not supported</h2>
-            <p data-phrase-id="BrowserNotSupportedInfo" >
-                Some Map Viewer features are not supported by Your web browser. 
-                There are many modern browsers... but You not use them. Please consider
-                changing Your web browser to newer one, that support new web development standarts.
-            </p>
-            <div>
-                <a href="http://www.whatbrowser.org/" data-role="button" target="_blank" data-inline="true" 
-                    data-icon="forward" data-phrase-id="UpdateWebBrowser" data-theme="b">Update browser</a>
-
-                <a href="#map" data-role="button" data-inline="true" 
-                    data-icon="alert" data-theme="e" data-phrase-id="GoToMapViewer" >Go to Map Viewer</a>
-            </div>
-        </div>
-    </div>
-    <!--browserSupportWarning-->
 
 
 
@@ -314,7 +305,7 @@
         <div data-role="content">
             <!--<img src="js/images/ajax-loader.gif"  style="float: left; background-color: transparent; color:transparent;" />-->
 
-            <img src="images/loader-square.gif" style="display: block; margin-left: auto; margin-right: auto; width: 64px; height: auto; margin-top: 3em; margin-bottom: 3em;" />
+            <img src="images/loader-pg.gif" style="display: block; margin-left: auto; margin-right: auto; width: 64px; height: auto; margin-top: 3em; margin-bottom: 3em;" />
         </div>
         <!--content-->
     </div>
@@ -329,7 +320,7 @@
         <div data-role="content">
             <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
                 <li>
-                    <a href="http://mapviewer.org" target="_blank" rel="external">mapviewer.org</a>
+					<a href="http://kubaszostak.github.io/mapviewer/" target="_blank" rel="external">kubaszostak.github.io/mapviewer</a>
                 </li>
                 <li>
                     <a href="http://novotive.com" target="_blank" rel="external">nocotive.com</a>
@@ -344,11 +335,8 @@
                     <a href="http://kubaszostak.github.io" target="_blank" rel="external">Kuba Szostak</a>
                 </li>
                 <li>
-                    <a href="http://kubaszostak.github.io/" target="_blank" rel="external">Jakub Szostak</a>
-                </li>
-                <li>
                     <div>
-                        <a href="#" data-role="button" onclick="mapViewer.ui.showMap();" data-inline="true" data-icon="back" data-phrase-id="Close">Close</a>
+                        <a href="#" data-role="button" onclick="mapViewer.app.ui.showMap();" data-inline="true" data-icon="back" data-phrase-id="Close">Close</a>
                     </div>
                 </li>
             </ul>
@@ -357,21 +345,7 @@
     <!--links-->
 
     
-    <div id="langDictionary" data-role="page">
 
-        <div data-role="header" data-theme="d">
-            <h1>Default (english) language dictionary</h1>
-        </div>
-
-        <div data-role="content">
-            <h3>Lang dictionary in JSON format usedy by Map Viewer</h3>
-            <p>
-                <pre id="langDictionaryContent" style="overflow: auto"><img src="images/loading.gif" />Loading lang dictionary content from HTML code...</pre>
-            </p>
-            <a data-role="button" href="#map">OK</a>
-        </div>
-    </div>
-    <!-- langDictionary -->
 
     <div id="mapServiceLayersDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
         <div data-role="header">
@@ -389,26 +363,26 @@
                 </li>
             </ul>
 
-            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1.5em;">
-                <li data-role="list-divider" data-phrase-id="VisibleLayers">Visible layers</li>
-                <li>
-                    <form>
-                        <fieldset id="MapServiceDialogLayers" data-role="controlgroup" data-iconpos="right" data-mini="true">
-                            <legend></legend>
-                            <input type="checkbox" name="checkbox1" id="checkbox1">
-                            <label for="checkbox1">checkbox1</label>
-                            <input type="checkbox" name="checkbox2" id="checkbox2">
-                            <label for="checkbox2">checkbox2</label>
-                        </fieldset>
-                    </form>
-                </li>
-                <li>
-                    <div>
-                        <a href="#map" data-role="button"  data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Cancel">Cancel</a>
-                        <a data-role="button" data-inline="true" data-icon="check" data-theme="b" onclick="mapViewer.mapServices.showLayersDialogSave()" data-phrase-id="Save"> Save </a>
-                    </div>
-                </li>
-            </ul>
+			<ul data-role="listview" id="MapServiceDialogLayersSection" data-inset="false" data-divider-theme="d" style="margin-top: 1.5em;">
+				<li data-role="list-divider" data-phrase-id="VisibleLayers">Visible layers</li>
+				<li>
+					<form>
+						<fieldset id="MapServiceDialogLayers" data-role="controlgroup" data-iconpos="right" data-mini="true">
+							<legend></legend>
+							<input type="checkbox" name="checkbox1" id="checkbox1">
+							<label for="checkbox1">checkbox1</label>
+							<input type="checkbox" name="checkbox2" id="checkbox2">
+							<label for="checkbox2">checkbox2</label>
+						</fieldset>
+					</form>
+				</li>
+				<li>
+					<div>
+						<a href="#map" data-role="button" data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Cancel">Cancel</a>
+						<a data-role="button" data-inline="true" data-icon="check" data-theme="b" onclick="mapViewer.app.ui.showMapServiceSettingsSave()" data-phrase-id="Save"> Save </a>
+					</div>
+				</li>
+			</ul>
 
             <div>
             </div>
@@ -417,6 +391,7 @@
         <!--content-->
     </div>
     <!--mapServiceLayersDialog-->
+
 
     <div id="mapServiceAddDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
         <div data-role="header">
@@ -434,7 +409,7 @@
                             <label for="mapServiceAddDialogUrl">Map service address</label>
                             <input type="url" name="mapServiceAddDialogUrl" id="mapServiceAddDialogUrl" placeholder="http://" data-clear-btn="true" />
                             <a href="#" data-transition="slide" data-role="button" data-inline="true" 
-                                data-theme="b" data-icon="plus" onclick="mapViewer.mapServices.addDialogGetMetadata()" data-phrase-id="Add">Add</a>
+                                data-theme="b" data-icon="plus" onclick="mapViewer.app.ui.showAddMapServiceProgress()" data-phrase-id="Add">Add</a>
                         </form>
 
                     </div>
@@ -443,29 +418,29 @@
                 <div data-role="collapsible" data-theme="b" data-content-theme="c" >
                     <h2 data-phrase-id="SampleMapServicesList">Map services list</h2>
                     <ul data-role="listview" data-filter="true" data-icon="plus" class="ui-icon-alt">
-                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer', 'Sample ESRI WMS server');">
+                        <li><a href="#" onclick="mapViewer.app.ui.showAddMapServiceProgress('http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer', 'esri.layers.WMSLayer', 'Sample ESRI WMS server');">
                             <h3>Sample ESRI WMS server</h3>
                             <p>Specialty/ESRI_StatesCitiesRivers_USA</p>
                             <p style="color: gray;">http://sampleserver1.arcgisonline.com/ArcGIS/services/Specialty/ESRI_StatesCitiesRivers_USA/MapServer/WMSServer</p>
                         </a></li>
-                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://gis.umgdy.gov.pl/geoserver/wms', 'Urząd Morski w Gdyni');">
-                            <h3>Urząd Morski w Gdyni</h3>
-                            <p>WMS Urzędu Morskiego w Gdyni</p>
+                        <li><a href="#" onclick="mapViewer.app.ui.showAddMapServiceProgress('http://gis.umgdy.gov.pl/geoserver/wms', 'esri.layers.WMSLayer', 'Urząd Morski w Gdyni');">
+                            <h3>Maritime Office Gdynia</h3>
+                            <p>WMS of Maritime Office Gdynia</p>
                             <p style="color: gray;">http://gis.umgdy.gov.pl/geoserver/wms</p>
                         </a></li>
-                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://wms.gdos.gov.pl/geoserver/wms', 'GDOŚ WMS');">
+                        <li><a href="#" onclick="mapViewer.app.ui.showAddMapServiceProgress('http://wms.gdos.gov.pl/geoserver/wms', 'esri.layers.WMSLayer', 'GDOŚ WMS');">
                             <h3>GDOŚ WMS</h3>
                             <p>Usługa przeglądania (WMS) Generalnej Dyrekcji Ochrony Środowiska</p>
                             <p style="color: gray;">http://wms.gdos.gov.pl/geoserver/wms</p>
                         </a></li>
-                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://www.bdl.info.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer', 'Bank Danych o Lasach');">
+                        <li><a href="#" onclick="mapViewer.app.ui.showAddMapServiceProgress('http://www.bdl.info.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer', 'esri.layers.WMSLayer', 'Bank Danych o Lasach');">
                             <h3>Bank Danych o Lasach</h3>
                             <p>Usługa przeglądania (WMS) danych Banku Danych o Lasach</p>
                             <p style="color: gray;">http://www.bdl.info.pl/ArcGIS/services/WMS_BDL/mapserver/WMSServer</p>
                         </a></li>
-                        <li><a href="#" onclick="mapViewer.mapServices.addDialogGetMetadata('http://mapy.geoportal.gov.pl/wss/service/pub/guest/G2_GO_WMS/MapServer/WMSServer', 'Dane o charakterze katastralnym');">
-                            <h3>Dane o charakterze katastralnym</h3>
-                            <p>Usługa przeglądania (WMS) Głównego Urzędu Geodezji i Kartografii</p>
+                        <li><a href="#" onclick="mapViewer.app.ui.showAddMapServiceProgress('http://mapy.geoportal.gov.pl/wss/service/pub/guest/G2_GO_WMS/MapServer/WMSServer', 'esri.layers.WMSLayer', 'Dane o charakterze katastralnym');">
+                            <h3>Polish cadastral data</h3>
+                            <p>Head Office of Geodesy and Cartography (Poland)</p>
                             <p style="color: gray;">http://mapy.geoportal.gov.pl/wss/service/pub/guest/G2_GO_WMS/MapServer/WMSServer</p>
                         </a></li>
 
@@ -489,34 +464,6 @@
     <!--mapServiceAddDialog-->
 
 
-
-    <div id="mapServiceSelectDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
-        <div data-role="header">
-            <h2 data-phrase-id="AddMapServiceTitle">Add map service</h2>
-            <a data-icon="back" class="ui-btn-right" data-iconpos="notext" href="#map"></a>
-        </div>
-        <div data-role="content">
-            <label for="mapServiceSelectDialogServiceTitle" data-phrase-id="MapServiceTitle">Map service title</label>
-            <input type="text" name="mapServiceSelectDialogServiceTitle" id="mapServiceSelectDialogServiceTitle" value="">
-            <p id="mapServiceSelectDialogServiceUrl" style="color: gray; font-size: small;" class="singleline">https://docs.google.com/document/d/1Z9_lGDASKxd1YeXQeYr9N5CRUeroe</p>
-
-            <ul data-role="listview" data-inset="true" data-divider-theme="d">
-                <li data-role="list-divider" data-phrase-id="SelectMapServiceType">Select Map Service</li>
-                <li><a href="#" onclick="mapViewer.mapServices.addDialogAddMapService(0);">Web Map Service (WMS)</a></li>
-            </ul>
-
-            <ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
-                <li>
-                    <div>
-                        <a href="#map" data-role="button"  data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Cancel">Cancel</a>
-                    </div>
-                </li>
-            </ul>
-
-        </div>
-        <!--content-->
-    </div>
-    <!--mapServiceSelectDialog-->
 
     <div id="mapLogDialog" data-role="dialog" data-overlay-theme="d" data-close-btn="none">
         <div data-role="header">

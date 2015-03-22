@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <ProjectGuid>{AF04383A-F2F3-45AB-9B38-0EDA7ECCA4D2}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <OutputPath>bin</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptModuleKind>amd</TypeScriptModuleKind>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.xml" />
+    <Content Include="error.html" />
+    <Content Include="favicon.ico" />
+    <Content Include="images\alert.png" />
+    <Content Include="images\cancel.png" />
+    <Content Include="images\error.png" />
+    <Content Include="images\info.png" />
+    <Content Include="images\loader-pg.gif" />
+    <Content Include="images\mapviewer.png" />
+    <Content Include="images\menu\2x2_grid_icon.png" />
+    <Content Include="images\menu\2x2_grid_icon18.png" />
+    <Content Include="images\menu\3x3_grid_icon.png" />
+    <Content Include="images\menu\align_just_icon.png" />
+    <Content Include="images\menu\bookmark_1_icon.png" />
+    <Content Include="images\menu\bookmark_2_icon.png" />
+    <Content Include="images\menu\browser_icon.png" />
+    <Content Include="images\menu\br_down_icon.png" />
+    <Content Include="images\menu\calc_icon.png" />
+    <Content Include="images\menu\calendar_2_icon.png" />
+    <Content Include="images\menu\cancel_icon.png" />
+    <Content Include="images\menu\checkbox_checked.png" />
+    <Content Include="images\menu\checkbox_unchecked_icon.png" />
+    <Content Include="images\menu\cogs_icon.png" />
+    <Content Include="images\menu\cog_icon.png" />
+    <Content Include="images\menu\Copy of target_icon.png" />
+    <Content Include="images\menu\cursor_drag_arrow_2_icon.png" />
+    <Content Include="images\menu\db_icon.png" />
+    <Content Include="images\menu\delete_icon.png" />
+    <Content Include="images\menu\doc_edit_icon.png" />
+    <Content Include="images\menu\download_icon.png" />
+    <Content Include="images\menu\external_page.png" />
+    <Content Include="images\menu\globe_1.png" />
+    <Content Include="images\menu\globe_1_icon.png" />
+    <Content Include="images\menu\globe_3_icon.png" />
+    <Content Include="images\menu\home_icon.png" />
+    <Content Include="images\menu\image_text_icon.png" />
+    <Content Include="images\menu\info_icon.png" />
+    <Content Include="images\menu\info_icon18.png" />
+    <Content Include="images\menu\key_icon.png" />
+    <Content Include="images\menu\layers_1_icon.png" />
+    <Content Include="images\menu\layers_1_icon18.png" />
+    <Content Include="images\menu\layers_2_icon.png" />
+    <Content Include="images\menu\link_icon.png" />
+    <Content Include="images\menu\list_bullets_icon.png" />
+    <Content Include="images\menu\map_pin.png" />
+    <Content Include="images\menu\pin_map_icon.png" />
+    <Content Include="images\menu\playback_reload_icon.png" />
+    <Content Include="images\menu\refresh_icon.png" />
+    <Content Include="images\menu\rnd_br_down_icon.png" />
+    <Content Include="images\menu\rnd_br_up_icon.png" />
+    <Content Include="images\menu\round_delete_icon.png" />
+    <Content Include="images\menu\round_minus_icon.png" />
+    <Content Include="images\menu\spechbubble.png" />
+    <Content Include="images\menu\spechbubble18.png" />
+    <Content Include="images\menu\star_fav_empty_icon.png" />
+    <Content Include="images\menu\target_icon.png" />
+    <Content Include="images\menu\target_icon18.png" />
+    <Content Include="images\menu\zoom_icon.png" />
+    <Content Include="index.html" />
+    <Content Include="scripts\esri\jsapi\license.txt" />
+    <Content Include="scripts\esri\jsapi\oauth\oauth-callback.html" />
+    <Content Include="scripts\esri\jsapi\typescript\demo.html" />
+    <Content Include="scripts\languative\languative.html" />
+    <Content Include="scripts\languative\languative.js" />
+    <Content Include="scripts\mapviewer\mapviewer-lang.js" />
+    <Content Include="scripts\metaviewer\metaviewer-response.js" />
+    <Content Include="scripts\mapviewer\mapviewer.css" />
+    <Content Include="metaviewer.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="images\menu\_Gentleface.url" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="scripts\languative\languative.js.map" />
+    <Content Include="scripts\languative\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="scripts\esri\jsapi\typescript\arcgis-js-api.d.ts" />
+    <TypeScriptCompile Include="scripts\esri\jsapi\typescript\demo\main.ts" />
+    <TypeScriptCompile Include="scripts\esri\jsapi\typescript\demo\MapController.ts" />
+    <TypeScriptCompile Include="scripts\esri\jsapi\typescript\demo\Point.ts" />
+    <TypeScriptCompile Include="scripts\languative\languative.ts" />
+    <TypeScriptCompile Include="scripts\mapviewer\mapviewer.ts" />
+    <TypeScriptCompile Include="scripts\mapviewer\mapviewer-config.ts" />
+    <TypeScriptCompile Include="scripts\mapviewer\mapviewer-app.ts" />
+    <TypeScriptCompile Include="scripts\metaviewer\metaviewer-config.ts" />
+    <TypeScriptCompile Include="scripts\metaviewer\metaviewer-lang.ts" />
+    <TypeScriptCompile Include="scripts\metaviewer\metaviewer.ts" />
+    <TypeScriptCompile Include="scripts\novotive\novotive-map-services.ts" />
+    <TypeScriptCompile Include="scripts\novotive\novotive.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dijit.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\doh.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojo.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.analytics.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.app.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.atom.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.av.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.calc.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.calendar.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.charting.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.collections.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.color.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.css3.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.data.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.date.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.dgauges.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.dnd.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.drawing.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.dtl.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.editor.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.embed.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.encoding.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.flash.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.form.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.fx.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.gantt.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.gauges.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.geo.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.gesture.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.gfx.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.gfx3d.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.grid.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.help.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.highlight.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.html.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.image.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.io.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.jq.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.json.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.jsonPath.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.lang.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.layout.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.main.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.math.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.mdnd.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.mobile.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.mvc.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.NodeList.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.rails.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.robot.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.rpc.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.secure.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.sketch.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.socket.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.sql.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.storage.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.string.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.testing.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.timing.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.treemap.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.uuid.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.validate.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.widget.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\dojo\dojox.xml.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\jquerymobile\jquerymobile.d.ts" />
+    <TypeScriptCompile Include="scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="scripts\esri\jsapi\jshint\.jshintrc" />
+    <Content Include="scripts\esri\jsapi\jshint\README.md" />
+    <Content Include="scripts\esri\jsapi\oauth\README.md" />
+    <Content Include="scripts\esri\jsapi\README.md" />
+    <Content Include="scripts\esri\jsapi\typescript\README.md" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>MapViewer</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4420</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:4420/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
+</Project>
