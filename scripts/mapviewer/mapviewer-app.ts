@@ -38,6 +38,7 @@ import InfoWindow = require("esri/dijit/InfoWindow");
 import InfoWindowLite = require("esri/dijit/InfoWindowLite");
 import Popup = require("esri/dijit/Popup");
 import PopupMobile = require("esri/dijit/PopupMobile");
+import Scalebar = require("esri/dijit/Scalebar");
 
 
 
@@ -281,12 +282,28 @@ export module mapViewerApp {
 		(<any>map).setInfoWindow(infoWindow);
 	}
 
+	function initScalebar(map: Map) {
+		var scalebarOpts = <esri.ScalebarOptions>{
+		};
+		var scalebar = new Scalebar({
+			attachTo: "bottom-left",
+			map: map,
+			scalebarStyle: "ruler", //"ruler" or "line".
+
+			// "dual" displays both miles and kilmometers, sets scalebarStyle: "line"
+			// "english" is the default, which displays miles
+			// "metric" for kilometers
+			scalebarUnit: "dual"
+        });
+	}
+
 	export function init() {
 
 		var config = mapViewerApp.utils.getMapViewerConfig();
 		var mapOpts = utils.getMapOptions(config);
 		mapViewerApp.map = new Map("mapDiv", mapOpts);
 		initMapInfoWindow(mapViewerApp.map);
+		initScalebar(mapViewerApp.map);
 		
 		mapViewerApp.map.on("load", events.mapLoaded);
 		mapViewerApp.map.on("resize", events.mapSizeChanged);

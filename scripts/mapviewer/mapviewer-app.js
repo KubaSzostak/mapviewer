@@ -2,7 +2,7 @@
 ///<reference path="../mapviewer/mapviewer.ts"/>
 ///<reference path="../typings/dojo/dojo.d.ts"/>
 ///<reference path="../esri/jsapi/typescript/arcgis-js-api.d.ts"/>
-define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "esri/config", "esri/map", "esri/graphic", "esri/symbols/PictureMarkerSymbol", "esri/layers/WMSLayer", "esri/geometry/Extent", "esri/geometry/Point", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", "esri/dijit/InfoWindowLite"], function (require, exports, on, domConstruct, ready, esri_config, Map, Graphic, PictureMarkerSymbol, WMSLayer, Extent, Point, webMercatorUtils, InfoTemplate, InfoWindowLite) {
+define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "esri/config", "esri/map", "esri/graphic", "esri/symbols/PictureMarkerSymbol", "esri/layers/WMSLayer", "esri/geometry/Extent", "esri/geometry/Point", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", "esri/dijit/InfoWindowLite", "esri/dijit/Scalebar"], function (require, exports, on, domConstruct, ready, esri_config, Map, Graphic, PictureMarkerSymbol, WMSLayer, Extent, Point, webMercatorUtils, InfoTemplate, InfoWindowLite, Scalebar) {
     // http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/layers_custom_wms.html
     // http://forums.arcgis.com/threads/20786-overlay-a-WMS-layer-on-top-of-Bingmap-Tilelayer
     // http://forums.arcgis.com/threads/52306-How-to-add-different-WMS-Layer-to-one-map
@@ -201,11 +201,24 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
             infoWindow.startup();
             map.setInfoWindow(infoWindow);
         }
+        function initScalebar(map) {
+            var scalebarOpts = {};
+            var scalebar = new Scalebar({
+                attachTo: "bottom-left",
+                map: map,
+                scalebarStyle: "ruler",
+                // "dual" displays both miles and kilmometers, sets scalebarStyle: "line"
+                // "english" is the default, which displays miles
+                // "metric" for kilometers
+                scalebarUnit: "dual"
+            });
+        }
         function init() {
             var config = mapViewerApp.utils.getMapViewerConfig();
             var mapOpts = utils.getMapOptions(config);
             mapViewerApp.map = new Map("mapDiv", mapOpts);
             initMapInfoWindow(mapViewerApp.map);
+            initScalebar(mapViewerApp.map);
             mapViewerApp.map.on("load", events.mapLoaded);
             mapViewerApp.map.on("resize", events.mapSizeChanged);
             mapViewerApp.map.on("update-start", function () {
