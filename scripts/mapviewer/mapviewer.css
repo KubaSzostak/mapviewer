@@ -20,6 +20,26 @@ html, body {
     white-space:normal;
 }
 
+
+.dijitSliderBottomBumper, 
+.dijitSliderLeftBumper,
+.dijitSliderProgressBar {
+	  background-color: silver;
+}
+
+dijitSliderButtonContainerV,
+dijitSliderButtonInner {
+	  background-color: silver;
+	  border-color: black;
+	  border-width: 2px;
+	  background: red; padding: 6px;
+
+}
+.esriLargeSliderTicks { 
+        display: none; 
+}
+
+
 /* make the page element 100% height*/
 #map {
     height: 100%;
@@ -100,6 +120,31 @@ html, body {
         color: #333 !important;
         text-decoration: none !important;
     }
+
+	
+
+.mv-map-coordinates {
+	width: 9em;
+    margin: 0.5em;
+    background-color:  rgba(222,222,222,0.8); 
+    padding: 0.1em 1em;
+    font-size: 0.8em;
+    white-space: nowrap; /* nowrap normal */
+	text-align:center;
+}
+
+@media (min-width: 28em) {
+
+	.mv-map-coordinates {
+		display: block;
+	}
+}
+@media (max-width: 28em) {
+
+	.mv-map-coordinates {
+		display: none;
+	}
+}
 
 
 #mapLogDialogList .ui-li-desc strong {
@@ -287,6 +332,7 @@ html, body {
 	}
 
 }
+
 
 
 /* ----------------------------------------------------------------------------------------------*/

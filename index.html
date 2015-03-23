@@ -18,7 +18,6 @@
 	
 
 	<!-- MapViewer -->
-	<link rel="stylesheet" href="scripts/mapviewer/mapviewer.css" />
 	<script src="scripts/languative/languative.js"></script>
 	<script src="scripts/novotive/novotive.js"></script>
 	<script src="scripts/mapviewer/mapviewer.js"></script>
@@ -27,11 +26,13 @@
 
 
 	<!--ArcGIS CDN-->
+	<link rel="stylesheet" href="http://js.arcgis.com/3.13/dijit/themes/claro/claro.css">
 	<link rel="stylesheet" href="http://js.arcgis.com/3.13/esri/css/esri.css">
 	<script  src="http://js.arcgis.com/3.13/"></script>	
 
 
 	<!-- MapViewer scripts (depends on ArcGIS/dojo/AMD) -->
+	<link rel="stylesheet" href="scripts/mapviewer/mapviewer.css" />
 	<script>
 	</script>
 
@@ -102,24 +103,29 @@
         </div>
         <!-- /header -->
         <div data-role="content">
-            <div id="mapDiv" style="min-height: 5px; min-width: 5px;">
-                <div class="mv-map-messages">
-                    <p id="mapMessageContainer" class="mv-map-message" style="display: none;" onclick="mapViewer.app.ui.showLog();">
-                        <span>
-                            <span id="mapErrorsCountContainer" style="display: none; white-space: nowrap;">
-                                <img src="images/cancel.png" />
-                                <span id="mapErrorsCount">6</span> |
-                            </span><span id="mapWarningsCountContainer" style="display: none; white-space: nowrap;">
-                                <img src="images/alert.png" />
-                                <span id="mapWarningsCount">22</span> |
-                            </span>
-                        </span><span id="mapMessage">MapViewer error!
-                        </span>
-                    </p>
-                </div>
-
-                <div id="progress" class="progress hidden"></div>
+            <div id="mapDiv" style="min-height: 3em; min-width: 1em;">	
             </div>
+			<div id="progress" class="progress hidden"></div>
+			<div class="mv-map-messages">
+				<p id="mapMessageContainer" class="mv-map-message" style="display: none;" onclick="mapViewer.app.ui.showLog();">
+					<span>
+						<span id="mapErrorsCountContainer" style="display: none; white-space: nowrap;">
+							<img src="images/cancel.png" />
+							<span id="mapErrorsCount">6</span> |
+						</span><span id="mapWarningsCountContainer" style="display: none; white-space: nowrap;">
+							<img src="images/alert.png" />
+							<span id="mapWarningsCount">22</span> |
+						</span>
+					</span><span id="mapMessage">
+						MapViewer error!
+					</span>
+				</p>
+			</div>
+			<div style="position: absolute; left: 50%; bottom: 0.2em; z-index: 1000">
+				<div style="position: relative; left: -50%;">
+					<p id="mapCoordinatesContainer" class="mv-map-coordinates">...</p>
+				</div>
+			</div>
         </div>
 
 
@@ -382,6 +388,27 @@
                 </li>
             </ul>
 
+			<form>
+				<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+					<legend>Visibility:</legend>
+
+					<input type="radio" name="visibilitySelector" id="visibilitySelector0" value="0" checked="checked">
+					<label for="visibilitySelector0">Invisible</label>
+
+					<input type="radio" name="visibilitySelector" id="visibilitySelector25" value="25">
+					<label for="visibilitySelector25"> 25% </label>
+
+					<input type="radio" name="visibilitySelector" id="visibilitySelector50" value="50">
+					<label for="visibilitySelector50"> 50% </label>
+
+					<input type="radio" name="visibilitySelector" id="visibilitySelector75" value="75">
+					<label for="visibilitySelector75"> 75% </label>
+
+					<input type="radio" name="visibilitySelector" id="visibilitySelector100" value="100">
+					<label for="visibilitySelector100">100%</label>
+				</fieldset>
+			</form>
+
 			<ul data-role="listview" id="MapServiceDialogLayersSection" data-inset="false" data-divider-theme="d" style="margin-top: 1.5em;">
 				<li data-role="list-divider" data-phrase-id="VisibleLayers">Visible layers</li>
 				<li>
@@ -395,12 +422,16 @@
 						</fieldset>
 					</form>
 				</li>
+			</ul>
+
+			<ul data-role="listview" data-inset="false" data-divider-theme="d" style="margin-top: 1em;">
 				<li>
 					<div>
 						<a href="#map" data-role="button" data-inline="true" data-icon="back" data-theme="c" data-phrase-id="Cancel">Cancel</a>
 						<a data-role="button" data-inline="true" data-icon="check" data-theme="b" onclick="mapViewer.app.ui.showMapServiceSettingsSave()" data-phrase-id="Save"> Save </a>
 					</div>
 				</li>
+
 			</ul>
 
             <div>
@@ -427,8 +458,23 @@
                         <form>
                             <label for="mapServiceAddDialogUrl">Map service address</label>
                             <input type="url" name="mapServiceAddDialogUrl" id="mapServiceAddDialogUrl" placeholder="http://" data-clear-btn="true" />
-                            <a href="#" data-transition="slide" data-role="button" data-inline="true" 
-                                data-theme="b" data-icon="plus" onclick="mapViewer.app.ui.showAddMapServiceProgress()" data-phrase-id="Add">Add</a>
+                           
+							<fieldset data-role="controlgroup" data-mini="true">
+								<legend>Map service type:</legend>
+								<input type="radio" name="mapServiceType" id="mapServiceTypeWMS" value="esri.layers.WMSLayer" checked="checked">
+								<label for="mapServiceTypeWMS">OGC Web Map Service (WMS)</label>
+
+								<!--
+								<input type="radio" name="mapServiceType" id="mapServiceTypeWTMS" value="esri.layers.WMTSLayer">
+								<label for="mapServiceTypeWTMS">OGC Web Map Tile Service (WMTS)</label>
+								-->
+
+							</fieldset>
+
+							<a href="#" data-transition="slide" data-role="button" data-inline="true"
+							   data-theme="b" data-icon="plus" onclick="mapViewer.app.ui.showAddMapServiceProgress()" data-phrase-id="Add">Add</a>
+
+
                         </form>
 
                     </div>
@@ -462,6 +508,13 @@
                             <p>Head Office of Geodesy and Cartography (Poland)</p>
                             <p style="color: gray;">http://mapy.geoportal.gov.pl/wss/service/pub/guest/G2_GO_WMS/MapServer/WMSServer</p>
                         </a></li>
+						<li>
+							<a href="#" onclick="mapViewer.app.ui.showAddMapServiceProgress('http://geoportal.cuzk.cz/WMS_SPH_PUB/WMService.aspx', 'esri.layers.WMSLayer', 'Prohlížecí služba WMS - Správní a katastrální hranice');">
+								<h3>Prohlížecí služba WMS - Správní a katastrální hranice</h3>
+								<p>Prohlížecí služba WMS-SPRAVHRAN je poskytována jako veřejná prohlížecí služba nad daty Vektorového souboru správních hranic a hranic katastrálních území pro měřítko 1:10 000.</p>
+								<p style="color: gray;">http://geoportal.cuzk.cz/WMS_SPH_PUB/WMService.aspx</p>
+							</a>
+						</li>
 
                         
                         
