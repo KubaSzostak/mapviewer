@@ -115,6 +115,8 @@ html, body {
 .ui-icon-mv-mapservices,
 .ui-icon-mv-grid,
 .ui-icon-mv-info,
+.ui-icon-mv-print,
+.ui-icon-mv-save,
 .ui-icon-mv-spechbubble {
     background-size: 18px 18px;
     padding-right: 1px;
@@ -137,6 +139,14 @@ html, body {
 
 .ui-icon-mv-grid {
     background-image: url("../../images/menu/2x2_grid_icon18.png");
+}
+
+.ui-icon-mv-print {
+    background-image: url("../../images/menu/print18.png");
+}
+
+.ui-icon-mv-save {
+    background-image: url("../../images/menu/save18.png");
 }
 
 .ui-icon-mv-info {

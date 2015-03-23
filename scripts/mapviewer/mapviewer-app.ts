@@ -38,6 +38,7 @@ import InfoWindow = require("esri/dijit/InfoWindow");
 import InfoWindowLite = require("esri/dijit/InfoWindowLite");
 import Popup = require("esri/dijit/Popup");
 import PopupMobile = require("esri/dijit/PopupMobile");
+import Scalebar = require("esri/dijit/Scalebar");
 
 
 
@@ -56,7 +57,6 @@ import PopupMobile = require("esri/dijit/PopupMobile");
 
 
 esri_config.defaults.io.proxyUrl = "http://proxy-ksz.rhcloud.com/proxy.jsp";
-
 
 
 
@@ -281,12 +281,28 @@ export module mapViewerApp {
 		(<any>map).setInfoWindow(infoWindow);
 	}
 
+	function initScalebar(map: Map) {
+		var scalebarOpts = <esri.ScalebarOptions>{
+		};
+		var scalebar = new Scalebar({
+			attachTo: "bottom-left",
+			map: map,
+			scalebarStyle: "ruler", //"ruler" or "line".
+
+			// "dual" displays both miles and kilmometers, sets scalebarStyle: "line"
+			// "english" is the default, which displays miles
+			// "metric" for kilometers
+			scalebarUnit: "dual"
+        });
+	}
+
 	export function init() {
 
 		var config = mapViewerApp.utils.getMapViewerConfig();
 		var mapOpts = utils.getMapOptions(config);
 		mapViewerApp.map = new Map("mapDiv", mapOpts);
 		initMapInfoWindow(mapViewerApp.map);
+		initScalebar(mapViewerApp.map);
 		
 		mapViewerApp.map.on("load", events.mapLoaded);
 		mapViewerApp.map.on("resize", events.mapSizeChanged);
@@ -304,7 +320,15 @@ export module mapViewerApp {
 		// when all event listeners are set you can add map services
 		mapServices.addMapServices(config.mapServices);
 
+		ui.bindClick("toolbarPrintButton", () => {
+			window.print();
+		});
+		ui.bindClick("menuPanelPrintButton",() => {
+			window.print();
+			ui.showMap();
+		});
 	}
+	
 	
     // ----------------------------------------------------------------------------------------
 
@@ -339,6 +363,17 @@ export module mapViewerApp {
             tag.html(html);
             tag.css("display", cssDisplay);
         }
+
+		export function bindClick(id: string, clickFunc) {
+			var elem = jQuery("#" + id);
+			elem.bind("click", function (e) {
+				e.stopImmediatePropagation();
+				e.preventDefault();
+				clickFunc();
+				elem.removeClass("ui-btn-active");
+				elem.removeClass("ui-focus");
+			});
+		}
 
         export function showLogMessage(rec: novotive.log.LogRecord, log: Array<novotive.log.LogRecord>) {
 

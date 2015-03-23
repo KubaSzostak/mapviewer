@@ -68,7 +68,7 @@
 </head>
 <body>
     <div data-role="page" id="map" style="min-height: 4em; min-width: 4em; background-color: silver;">
-        <div data-role="header" style="overflow: hidden;" data-theme="c">
+        <div data-role="header" style="overflow: hidden;" data-theme="c" class="hidden-print">
             <!--Phone sidebar menu-->
             <div data-role="controlgroup" data-type="horizontal" class="ui-btn-left visible-phone" >
                 <a href="#menuPanel" data-role="button" data-iconpos="notext" data-icon="bars" 
@@ -85,6 +85,10 @@
 
                 <a href="#basemapsPanel" data-role="button" data-icon="mv-grid" data-iconpos="notext"
                     class=" ui-icon-nodisc ui-icon-noradius" data-iconshadow="false">Change basemap</a>
+
+				<a href="#map" data-role="button" data-icon="mv-print" data-iconpos="notext"
+				   id="toolbarPrintButton"
+				   class=" ui-icon-nodisc ui-icon-noradius" data-iconshadow="false">Print</a>
 
                 <a href="#about" data-role="button" data-icon="mv-info" 
                     data-iconpos="notext" class="ui-icon-nodisc">About Map Viewer</a>
@@ -119,7 +123,7 @@
         </div>
 
 
-        <div data-role="panel" id="menuPanel" data-position="left" data-display="overlay" data-icon="false">
+        <div data-role="panel" id="menuPanel" data-position="left" data-display="overlay" data-icon="false" class="hidden-print">
             <ul data-role="listview">
                 <li data-icon="back" data-theme="b">
                     <a href="#map" data-rel="close" data-phrase-id="Menu" >Menu</a>
@@ -142,6 +146,12 @@
                         <span data-phrase-id="ChangeBasemap">Change basemap</span>
                     </a>
                 </li>
+				<li data-icon="false">
+					<a href="#map" id="menuPanelPrintButton">
+						<img src="images/menu/print.png" class="ui-li-icon" />
+						<span data-phrase-id="Print">Print</span>
+					</a>
+				</li>
                 <li>
                     <a href="http://mapviewer.userecho.com/list/19930-ideas-and-questions/"
                         target="_blank" onclick="$('#menuPanel').panel('close');">
@@ -163,17 +173,17 @@
 
 
 
-        <div data-role="panel" id="basemapsPanel" data-display="overlay" data-position-fixed="true">
-            <ul data-role="listview">
-                <li data-icon="back" data-theme="b">
-                    <a  href="#map" data-rel="close"  data-phrase-id="ChangeBasemap">Change basemap</a>
-                </li>
-                <li data-icon="false" style="height: 77px;">
-                    <a href="#map"  onclick="mapViewer.app.map.setBasemap('topo');" data-rel="close">
+		<div data-role="panel" id="basemapsPanel" data-display="overlay" data-position-fixed="true" class="hidden-print">
+			<ul data-role="listview">
+				<li data-icon="back" data-theme="b">
+					<a href="#map" data-rel="close" data-phrase-id="ChangeBasemap">Change basemap</a>
+				</li>
+				<li data-icon="false" style="height: 77px;">
+					<a href="#map" onclick="mapViewer.app.map.setBasemap('topo');" data-rel="close">
 						<img src="http://js.arcgis.com/3.13/esri/images/basemap/topo.jpg">
-                        <h3 data-phrase-id="Topographic">Topographic</h3>
+						<h3 data-phrase-id="Topographic">Topographic</h3>
 					</a>
-                </li>
+				</li>
 				<li data-icon="false" style="height: 77px;">
 					<a href="#map" onclick="mapViewer.app.map.setBasemap('streets');" data-rel="close">
 						<img src="http://js.arcgis.com/3.13/esri/images/basemap/streets.jpg">
@@ -192,46 +202,55 @@
 						<h3 data-phrase-id="GrayCanvas">Gray Canvas</h3>
 					</a>
 				</li>
-            </ul>
-        </div>
+			</ul>
+		</div>
 
-        <div data-role="panel" id="mapServicesPanel" data-position="left" data-display="overlay">
+		<div data-role="panel" id="mapServicesPanel" data-position="left" data-display="overlay" class="hidden-print">
 
-            <ul id="mapServicesList" data-role="listview">
-                <li data-icon="back" data-theme="b">
-                    <a  href="#map" data-rel="close"   data-phrase-id="MapServices">Map services</a>
-                </li>
-                <li data-icon="false">
-                    <!--style="display: none;"-->
-                    <a href="#mapServiceAddDialog">
-                        <img src="images/menu/layers_2_icon.png" class="ui-li-icon" />
-                        <span data-phrase-id="MapServicesAdd">Add map service</span>
-                    </a>
-                </li>
-            </ul>
-
-
-            <div data-role="popup" id="mapServiceAction" data-theme="d">
-                <ul data-role="listview" data-inset="true" style="min-width: 210px;" data-theme="d">
-                    <li data-icon="back" data-theme="b"><a href="#map"  data-phrase-id="MapServiceActionsHeader">Choose an action
-                    </a></li>
+			<ul id="mapServicesList" data-role="listview">
+				<li data-icon="back" data-theme="b">
+					<a href="#map" data-rel="close" data-phrase-id="MapServices">Map services</a>
+				</li>
+				<li data-icon="false">
+					<!--style="display: none;"-->
+					<a href="#mapServiceAddDialog">
+						<img src="images/menu/layers_2_icon.png" class="ui-li-icon" />
+						<span data-phrase-id="MapServicesAdd">Add map service</span>
+					</a>
+				</li>
+			</ul>
 
 
-                    <!--                    
-    <li data-icon="arrow-u"><a  onClick="mapViewer.mapServices.moveUp();" data-phrase-id="MoveUp">Move up
-                    </a></li>
-                    <li data-icon="arrow-d"><a  onClick="mapViewer.mapServices.moveDown();" data-phrase-id="MoveDown">Move down
-                    </a></li>
-    -->
+			<div data-role="popup" id="mapServiceAction" data-theme="d">
+				<ul data-role="listview" data-inset="true" style="min-width: 210px;" data-theme="d">
+					<li data-icon="back" data-theme="b">
+						<a href="#map" data-phrase-id="MapServiceActionsHeader">
+							Choose an action
+						</a>
+					</li>
 
-                    <li data-icon="delete"><a onclick="mapViewer.app.ui.deleteSelectedMapService();" style="color: maroon;" data-phrase-id="Delete">Delete
-                    </a></li>
-                    <li data-icon="edit"><a onclick="mapViewer.app.ui.showMapServiceSettings();" data-phrase-id="MapServceSettings" data-rel="popup" data-position-to="window">Map Settings
-                    </a></li>
-                </ul>
-            </div>
 
-        </div>
+					<!--
+				<li data-icon="arrow-u"><a  onClick="mapViewer.mapServices.moveUp();" data-phrase-id="MoveUp">Move up
+								</a></li>
+								<li data-icon="arrow-d"><a  onClick="mapViewer.mapServices.moveDown();" data-phrase-id="MoveDown">Move down
+								</a></li>
+				-->
+
+					<li data-icon="delete">
+						<a onclick="mapViewer.app.ui.deleteSelectedMapService();" style="color: maroon;" data-phrase-id="Delete">
+							Delete
+						</a>
+					</li>
+					<li data-icon="edit">
+						<a onclick="mapViewer.app.ui.showMapServiceSettings();" data-phrase-id="MapServceSettings" data-rel="popup" data-position-to="window">
+							Map Settings
+						</a>
+					</li>
+				</ul>
+			</div>
+
+		</div>
         <!--mapServicesPanel-->
 
          
