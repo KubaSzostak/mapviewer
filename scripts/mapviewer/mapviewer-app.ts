@@ -24,8 +24,10 @@ import Layer = require("esri/layers/layer");
 import DynamicMapServiceLayer = require("esri/layers/DynamicMapServiceLayer");
 import WMSLayer = require("esri/layers/WMSLayer");
 import WMTSLayer = require("esri/layers/WMTSLayer");
+import WMTSLayerInfo = require("esri/layers/WMTSLayerInfo");
 import FeatureLayer = require("esri/layers/FeatureLayer");
 import ArcGISDynamicMapServiceLayer = require("esri/layers/ArcGISDynamicMapServiceLayer");
+import ArcGISTiledMapServiceLayer = require("esri/layers/ArcGISTiledMapServiceLayer");
 
 import SpatialReference = require("esri/SpatialReference");
 import Extent = require("esri/geometry/Extent");
@@ -81,8 +83,6 @@ export module mapViewerApp {
 		 Valid EPSG values used by above services are: [3857, 3587, 3785, 102100, 102113, 900913]
 		 Recomended is 3857 - http://wiki.openstreetmap.org/wiki/EPSG:3857
 		*/
-		export var mercatorEpsgList = [3857, 3587, 102100, 102113, 900913]; // , 3785 causes vertical movement on geoserver.org services
-		export var defaultMercatorEpsg = 3857; // Recomended Web Mercator EPSG, http://wiki.openstreetmap.org/wiki/EPSG:3857
 
 		export function globeExtent() {
 			return new Extent({
@@ -146,7 +146,7 @@ export module mapViewerApp {
 
             for (var j = 0; j < mapViewerApp.map.layerIds.length; j++) {
 				var mapService = mapViewerApp.map.getLayer(map.layerIds[j]);
-				if (basemapIds.indexOf(mapService.id) < 0) {
+				if (basemapIds && (basemapIds.indexOf(mapService.id) < 0)) {
 					var mapConfig = getMapServiceConfig(mapService);
 					config.mapServices.push(mapConfig);
 				}
@@ -183,7 +183,14 @@ export module mapViewerApp {
         }
 
 		export function getMapOptions(config: mapViewer.IMapConfig) {
+
+			var bounds = new Extent({
+				xmin: -128.816, ymin: 25.076, xmax: -72.855, ymax: 51.385,
+				spatialReference: { "wkid": 4326 }
+			});
+
 			var res = <esri.MapOptions>{
+				//extent: bounds,
                 basemap: config.basemap,
                 zoom: config.zoom,
                 minZoom: 3,
@@ -192,12 +199,16 @@ export module mapViewerApp {
 				logo: true,
 				showAttribution: false,
                 center: [config.centerX, config.centerY],
-                slider: false, // ZoomIn, ZoomOut buttons
+                slider: true, // ZoomIn, ZoomOut buttons
+				sliderStyle: "large", // 'small' or 'large'.
+				sliderPosition: "top-right",
 				wrapAround180: true,
 				showInfoWindowOnClick: true
                 //infoWindow: new Popup(null, new HTMLDivElement()) // Define a popup 
             };
 			return res;
+
+
 		}
 
 		export function addServiceLogInfo(logRec: novotive.log.LogRecord, service: Layer) {
@@ -313,6 +324,9 @@ export module mapViewerApp {
 		mapViewerApp.map.on("update-end", function () {
 			jQuery.mobile.loading("hide");
 		});
+
+		mapViewerApp.map.on("mouse-move", events.showCoordinates);
+		mapViewerApp.map.on("mouse-drag", events.showCoordinates);
 
 		novotive.log.addLogEventListener(mapViewerApp.ui.showLogMessage);
 		
@@ -518,6 +532,28 @@ export module mapViewerApp {
             mapLayers.controlgroup();
             mapLayers.trigger("create");
             mapLayers.controlgroup("refresh");
+		
+
+			var visibilitySelectors = $('input:radio[name=visibilitySelector]');
+			visibilitySelectors.filter('[value=0]').prop('checked', true);
+			if (mapService.visible) {
+				if (mapService.opacity > 0.8) {
+					visibilitySelectors.filter('[value=100]').prop('checked', true);
+				}
+				else if (mapService.opacity > 0.6) {
+					visibilitySelectors.filter('[value=75]').prop('checked', true);
+				}
+				else if (mapService.opacity > 0.3) {
+					visibilitySelectors.filter('[value=50]').prop('checked', true);
+				}
+				else if (mapService.opacity > 0.1) {
+					visibilitySelectors.filter('[value=25]').prop('checked', true);
+				}
+				else {
+					mapService.setVisibility(false);
+					visibilitySelectors.filter('[value=0]').prop('checked', true);
+				}
+			}			
 
             mapViewerApp.ui.showDialog("mapServiceLayersDialog");
         }
@@ -528,19 +564,31 @@ export module mapViewerApp {
             var mapService = mapServices.getById(selectedMapServiceId);
 			var serviceInfo = utils.getMapServiceInfo(mapService);
 
-            var checkedLayers = jQuery("#MapServiceDialogLayers").find(':checkbox').filter(':checked');
-            var checkedLayerNames = new Array();
-            checkedLayers.each(function () {
-                checkedLayerNames.push(jQuery(this).attr('value'));
-            });
+			
+			var opacity = jQuery('input[name="visibilitySelector"]:checked').val() / 100;
+			if (opacity < 0.1) {
+				mapService.setVisibility(false);
+			}
+			else {
+				mapService.setVisibility(true);
+				mapService.setOpacity(opacity);
+			}
+
+			// TODO: Layer Visibility
+
+            //var checkedLayers = jQuery("#MapServiceDialogLayers").find(':checkbox').filter(':checked');
+            //var checkedLayerNames = new Array();
+            //checkedLayers.each(function () {
+            //    checkedLayerNames.push(jQuery(this).attr('value'));
+            //});
 
 
-            var layers = serviceInfo.subLayers;
-            for (var i = 0; i < layers.length; i++) {
-                var subLayer = layers[i];
-                subLayer.visible = checkedLayerNames.indexOf(subLayer.id) > -1;
-            }
-			utils.updateVisibleLayers(mapService);
+            //var layers = serviceInfo.subLayers;
+            //for (var i = 0; i < layers.length; i++) {
+            //    var subLayer = layers[i];
+            //    subLayer.visible = checkedLayerNames.indexOf(subLayer.id) > -1;
+            //}
+			//utils.updateVisibleLayers(mapService);
             mapViewerApp.ui.showMap();
 			mapViewerApp.utils.saveMapViewerConfig();
         } // showLayersDialogSave()
@@ -592,10 +640,13 @@ export module mapViewerApp {
         }
 		
         export function showAddMapServiceProgress(url: string = null, serviceType: string = null, title: string = null) {
-            if (!(url))
-                url = jQuery("#mapServiceAddDialogUrl").val();
+
 			if (!serviceType)
 				serviceType = mapServices.types.wms;
+			if (!(url)) {
+                url = jQuery("#mapServiceAddDialogUrl").val();
+				serviceType = jQuery('input[name="mapServiceType"]:checked').val();
+			}
 			
 
             mapViewerApp.ui.showDialog("progressDialog", "slide"); 
@@ -668,6 +719,17 @@ export module mapViewerApp {
             jQuery(document).on("pageshow", "#map", displaySizeChanged);
         }
 
+		export function showCoordinates(evt: esri.AGSMouseEvent) {
+			if (evt.mapPoint && evt.mapPoint.x && (evt.mapPoint.x != NaN)) {
+				//the map is in web mercator but display coordinates in geographic (lat, long)
+				var mp = <Point>webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+				dom.byId("mapCoordinatesContainer").innerHTML = "&phi;:" + mp.x.toFixed(3) + "&nbsp;&nbsp; &lambda;:" + mp.y.toFixed(3);
+			}
+			else {
+				dom.byId("mapCoordinatesContainer").innerHTML = "...";
+			}
+        }
+
         function displaySizeChanged() {
             if (!mapViewerApp.isReady() || (jQuery.mobile.activePage.attr("id") != "map")) {
                 return;
@@ -682,9 +744,13 @@ export module mapViewerApp {
 
     export module mapServices {
 
+		export var webMarcatorEpsg = [102100, 3857, 102113, 900913];
+		export var mercatorEpsgList = [3857, 900913, 102100, 102113, 3587]; // , 3785 causes vertical movement on geoserver.org services
+		export var defaultMercatorEpsg = 3857; // Recomended Web Mercator EPSG, http://wiki.openstreetmap.org/wiki/EPSG:3857
 
 		export var types = {
-			wms: "esri.layers.WMSLayer".toLowerCase()
+			wms: "esri.layers.WMSLayer".toLowerCase(),
+			wmts: "esri.layers.WMTSLayer".toLowerCase()
 		}    
 
         export function getByUrl(url: string): Layer {
@@ -702,39 +768,34 @@ export module mapViewerApp {
         }
 
 		export function castWms(service: Layer): WMSLayer { return utils.getMapServiceType(service) == types.wms ? <WMSLayer>service : null; }
+		export function castWmts(service: Layer): WMTSLayer { return utils.getMapServiceType(service) == types.wmts ? <WMTSLayer>service : null; }
 
 
-		function initServiceLayers(service: Layer) {
-			var layers = new Array<mapViewer.IMapServiceLayer>();
-
-			var wms = castWms(service); 
-			if (wms)
-			{
-				var visibleLayers = new Array<string>();
-				for (var i = 0; i < wms.layerInfos.length; i++) {
-					var wmsLayerInfo = wms.layerInfos[i];
-					visibleLayers.push(wmsLayerInfo.name);
-
-					var serviceLayer = <mapViewer.IMapServiceLayer>{};
-					serviceLayer.id = wmsLayerInfo.name;
-					serviceLayer.title = wmsLayerInfo.title;
-					serviceLayer.description = wmsLayerInfo.description;
-					serviceLayer.visible = true;
-				}
-				wms.setVisibleLayers(visibleLayers);
-			}
-
-			(<any>service).mapServiceLayers = layers;
-		}
 
 
 
         export function add(mapServiceType: string, url: string, displayTitle?: string, onServiceError?: (err: novotive.log.LogRecord, service: Layer) => void, onServiceAdded?: (service: Layer) => void) {
 
 			var mapService: Layer = null;
-			if (mapServiceType.toLowerCase() == mapViewerApp.mapServices.types.wms) {
+			if (mapServiceType.toLowerCase() == mapServices.types.wms) {
 				mapService = new WMSLayer(url);
 				// Do not init WMS service here. If service already exists it will be initialized twice
+			}
+			else if (mapServiceType.toLowerCase() == mapServices.types.wmts) {
+				var layerInfo = new WMTSLayerInfo({
+					identifier: "opengeo:countries",
+					tileMatrixSet: "EPSG:900913", // WebMercator: 102100: 3857: 102113: 900913, WGS:4326
+					format: "png"
+				});
+				var options = <esri.WMTSLayerOptions> {
+					//layerInfo: layerInfo,
+					resampling: false, // set if resampling is enabled at all levels where tiles are not available
+					serviceMode: "KVP"
+				};
+				//url = "http://suite.opengeo.org/geoserver/gwc/service/wmts?";
+				// "http://suite.opengeo.org/geoserver/gwc/service/wmts?SERVICE=WMTS&Request=GetCapabilities
+				var wmts = new WMTSLayer(url, options);
+				mapService = wmts;
 			}
 
 			if (mapService == null) {
@@ -753,8 +814,33 @@ export module mapViewerApp {
         }
         // add()
 
-		function initNewService(service: Layer) {
-			var wms = mapServices.castWms(service);
+		function initService(service: Layer) {
+			initWmsService(mapServices.castWms(service));
+			//initWmtsService(mapServices.castWmts(service));
+		}
+
+		function initWmtsService(wmts: WMTSLayer) {
+			if (!wmts)
+				return;
+			if (!mapViewerApp.map.basemapLayerIds || !mapViewerApp.map.basemapLayerIds.length)
+				return;
+
+			var baseMapId = mapViewerApp.map.basemapLayerIds[0];
+			var baseMap = <ArcGISTiledMapServiceLayer>mapViewerApp.map.getLayer(baseMapId);
+			if (!baseMap.tileInfo || !baseMap.tileInfo.lods)
+				return;
+
+			var mLods = baseMap.tileInfo.lods;
+
+			wmts.on("load",(eArgs) => {
+				var wLods = wmts.tileInfo.lods;
+			});
+
+		}
+
+		function initWmsService(wms: WMSLayer) {
+			if (!wms)
+				return;
 			if (wms && !wms.loaded) {
 				wms.on("load",(eArgs) => {
 					// By default all WMS layers are invisible
@@ -784,12 +870,19 @@ export module mapViewerApp {
 				return;
 			}
 
-			initNewService(service);
+			initService(service);
 			console.log("Adding map service", service);
 			
 			var loadErrHandler = service.on("error",(eArgs) => {
 				loadErrHandler.remove();
+				mapViewerApp.map.removeLayer(service);
+
 				var logRec = new novotive.log.LogRecord("Map service initialization errror.");
+				logRec.addDescription(eArgs.error.message);
+				var respText = (<any>eArgs.error).responseText;
+				if (respText) {
+					logRec.addDescription("HTTP response: " + respText.substring(0, 100));
+				}
 				utils.addServiceLogInfo(logRec, service);
 				if (onServiceError)
 					onServiceError(logRec, service);

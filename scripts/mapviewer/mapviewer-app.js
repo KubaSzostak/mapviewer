@@ -2,7 +2,7 @@
 ///<reference path="../mapviewer/mapviewer.ts"/>
 ///<reference path="../typings/dojo/dojo.d.ts"/>
 ///<reference path="../esri/jsapi/typescript/arcgis-js-api.d.ts"/>
-define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "esri/config", "esri/map", "esri/graphic", "esri/symbols/PictureMarkerSymbol", "esri/layers/WMSLayer", "esri/geometry/Extent", "esri/geometry/Point", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", "esri/dijit/InfoWindowLite", "esri/dijit/Scalebar"], function (require, exports, on, domConstruct, ready, esri_config, Map, Graphic, PictureMarkerSymbol, WMSLayer, Extent, Point, webMercatorUtils, InfoTemplate, InfoWindowLite, Scalebar) {
+define(["require", "exports", "dojo/on", "dojo/dom", "dojo/dom-construct", "dojo/ready", "esri/config", "esri/map", "esri/graphic", "esri/symbols/PictureMarkerSymbol", "esri/layers/WMSLayer", "esri/layers/WMTSLayer", "esri/layers/WMTSLayerInfo", "esri/geometry/Extent", "esri/geometry/Point", "esri/geometry/webMercatorUtils", "esri/InfoTemplate", "esri/dijit/InfoWindowLite", "esri/dijit/Scalebar"], function (require, exports, on, dom, domConstruct, ready, esri_config, Map, Graphic, PictureMarkerSymbol, WMSLayer, WMTSLayer, WMTSLayerInfo, Extent, Point, webMercatorUtils, InfoTemplate, InfoWindowLite, Scalebar) {
     // http://help.arcgis.com/en/webapi/javascript/arcgis/jssamples/layers_custom_wms.html
     // http://forums.arcgis.com/threads/20786-overlay-a-WMS-layer-on-top-of-Bingmap-Tilelayer
     // http://forums.arcgis.com/threads/52306-How-to-add-different-WMS-Layer-to-one-map
@@ -30,8 +30,6 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
              Valid EPSG values used by above services are: [3857, 3587, 3785, 102100, 102113, 900913]
              Recomended is 3857 - http://wiki.openstreetmap.org/wiki/EPSG:3857
             */
-            utils.mercatorEpsgList = [3857, 3587, 102100, 102113, 900913]; // , 3785 causes vertical movement on geoserver.org services
-            utils.defaultMercatorEpsg = 3857; // Recomended Web Mercator EPSG, http://wiki.openstreetmap.org/wiki/EPSG:3857
             function globeExtent() {
                 return new Extent({
                     xmin: -20037508.34,
@@ -84,7 +82,7 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                 var basemapIds = mapViewerApp.map.basemapLayerIds;
                 for (var j = 0; j < mapViewerApp.map.layerIds.length; j++) {
                     var mapService = mapViewerApp.map.getLayer(mapViewerApp.map.layerIds[j]);
-                    if (basemapIds.indexOf(mapService.id) < 0) {
+                    if (basemapIds && (basemapIds.indexOf(mapService.id) < 0)) {
                         var mapConfig = getMapServiceConfig(mapService);
                         config.mapServices.push(mapConfig);
                     }
@@ -115,7 +113,15 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
             }
             utils.getMapViewerConfig = getMapViewerConfig;
             function getMapOptions(config) {
+                var bounds = new Extent({
+                    xmin: -128.816,
+                    ymin: 25.076,
+                    xmax: -72.855,
+                    ymax: 51.385,
+                    spatialReference: { "wkid": 4326 }
+                });
                 var res = {
+                    //extent: bounds,
                     basemap: config.basemap,
                     zoom: config.zoom,
                     minZoom: 3,
@@ -124,7 +130,9 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                     logo: true,
                     showAttribution: false,
                     center: [config.centerX, config.centerY],
-                    slider: false,
+                    slider: true,
+                    sliderStyle: "large",
+                    sliderPosition: "top-right",
                     wrapAround180: true,
                     showInfoWindowOnClick: true
                 };
@@ -227,6 +235,8 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
             mapViewerApp.map.on("update-end", function () {
                 jQuery.mobile.loading("hide");
             });
+            mapViewerApp.map.on("mouse-move", events.showCoordinates);
+            mapViewerApp.map.on("mouse-drag", events.showCoordinates);
             novotive.log.addLogEventListener(mapViewerApp.ui.showLogMessage);
             // when all event listeners are set you can add map services
             mapServices.addMapServices(config.mapServices);
@@ -402,6 +412,26 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                 mapLayers.controlgroup();
                 mapLayers.trigger("create");
                 mapLayers.controlgroup("refresh");
+                var visibilitySelectors = $('input:radio[name=visibilitySelector]');
+                visibilitySelectors.filter('[value=0]').prop('checked', true);
+                if (mapService.visible) {
+                    if (mapService.opacity > 0.8) {
+                        visibilitySelectors.filter('[value=100]').prop('checked', true);
+                    }
+                    else if (mapService.opacity > 0.6) {
+                        visibilitySelectors.filter('[value=75]').prop('checked', true);
+                    }
+                    else if (mapService.opacity > 0.3) {
+                        visibilitySelectors.filter('[value=50]').prop('checked', true);
+                    }
+                    else if (mapService.opacity > 0.1) {
+                        visibilitySelectors.filter('[value=25]').prop('checked', true);
+                    }
+                    else {
+                        mapService.setVisibility(false);
+                        visibilitySelectors.filter('[value=0]').prop('checked', true);
+                    }
+                }
                 mapViewerApp.ui.showDialog("mapServiceLayersDialog");
             }
             ui.showMapServiceSettings = showMapServiceSettings;
@@ -409,17 +439,26 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
             function showMapServiceSettingsSave() {
                 var mapService = mapServices.getById(selectedMapServiceId);
                 var serviceInfo = utils.getMapServiceInfo(mapService);
-                var checkedLayers = jQuery("#MapServiceDialogLayers").find(':checkbox').filter(':checked');
-                var checkedLayerNames = new Array();
-                checkedLayers.each(function () {
-                    checkedLayerNames.push(jQuery(this).attr('value'));
-                });
-                var layers = serviceInfo.subLayers;
-                for (var i = 0; i < layers.length; i++) {
-                    var subLayer = layers[i];
-                    subLayer.visible = checkedLayerNames.indexOf(subLayer.id) > -1;
+                var opacity = jQuery('input[name="visibilitySelector"]:checked').val() / 100;
+                if (opacity < 0.1) {
+                    mapService.setVisibility(false);
                 }
-                utils.updateVisibleLayers(mapService);
+                else {
+                    mapService.setVisibility(true);
+                    mapService.setOpacity(opacity);
+                }
+                // TODO: Layer Visibility
+                //var checkedLayers = jQuery("#MapServiceDialogLayers").find(':checkbox').filter(':checked');
+                //var checkedLayerNames = new Array();
+                //checkedLayers.each(function () {
+                //    checkedLayerNames.push(jQuery(this).attr('value'));
+                //});
+                //var layers = serviceInfo.subLayers;
+                //for (var i = 0; i < layers.length; i++) {
+                //    var subLayer = layers[i];
+                //    subLayer.visible = checkedLayerNames.indexOf(subLayer.id) > -1;
+                //}
+                //utils.updateVisibleLayers(mapService);
                 mapViewerApp.ui.showMap();
                 mapViewerApp.utils.saveMapViewerConfig();
             }
@@ -469,10 +508,12 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                 if (url === void 0) { url = null; }
                 if (serviceType === void 0) { serviceType = null; }
                 if (title === void 0) { title = null; }
-                if (!(url))
-                    url = jQuery("#mapServiceAddDialogUrl").val();
                 if (!serviceType)
                     serviceType = mapServices.types.wms;
+                if (!(url)) {
+                    url = jQuery("#mapServiceAddDialogUrl").val();
+                    serviceType = jQuery('input[name="mapServiceType"]:checked').val();
+                }
                 mapViewerApp.ui.showDialog("progressDialog", "slide");
                 mapServices.add(serviceType, url, title, function (err, mapService) {
                     showError(err);
@@ -530,6 +571,17 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                 // After closing dialog #map page is showing again, so reset display sizes.
                 jQuery(document).on("pageshow", "#map", displaySizeChanged);
             }
+            function showCoordinates(evt) {
+                if (evt.mapPoint && evt.mapPoint.x && (evt.mapPoint.x != NaN)) {
+                    //the map is in web mercator but display coordinates in geographic (lat, long)
+                    var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
+                    dom.byId("mapCoordinatesContainer").innerHTML = "&phi;:" + mp.x.toFixed(3) + "&nbsp;&nbsp; &lambda;:" + mp.y.toFixed(3);
+                }
+                else {
+                    dom.byId("mapCoordinatesContainer").innerHTML = "...";
+                }
+            }
+            events.showCoordinates = showCoordinates;
             function displaySizeChanged() {
                 if (!mapViewerApp.isReady() || (jQuery.mobile.activePage.attr("id") != "map")) {
                     return;
@@ -542,8 +594,12 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
         // -----------------------------------------------------------------------------------------
         var mapServices;
         (function (mapServices) {
+            mapServices.webMarcatorEpsg = [102100, 3857, 102113, 900913];
+            mapServices.mercatorEpsgList = [3857, 900913, 102100, 102113, 3587]; // , 3785 causes vertical movement on geoserver.org services
+            mapServices.defaultMercatorEpsg = 3857; // Recomended Web Mercator EPSG, http://wiki.openstreetmap.org/wiki/EPSG:3857
             mapServices.types = {
-                wms: "esri.layers.WMSLayer".toLowerCase()
+                wms: "esri.layers.WMSLayer".toLowerCase(),
+                wmts: "esri.layers.WMTSLayer".toLowerCase()
             };
             function getByUrl(url) {
                 for (var j = 0; j < mapViewerApp.map.layerIds.length; j++) {
@@ -563,28 +619,30 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                 return utils.getMapServiceType(service) == mapServices.types.wms ? service : null;
             }
             mapServices.castWms = castWms;
-            function initServiceLayers(service) {
-                var layers = new Array();
-                var wms = castWms(service);
-                if (wms) {
-                    var visibleLayers = new Array();
-                    for (var i = 0; i < wms.layerInfos.length; i++) {
-                        var wmsLayerInfo = wms.layerInfos[i];
-                        visibleLayers.push(wmsLayerInfo.name);
-                        var serviceLayer = {};
-                        serviceLayer.id = wmsLayerInfo.name;
-                        serviceLayer.title = wmsLayerInfo.title;
-                        serviceLayer.description = wmsLayerInfo.description;
-                        serviceLayer.visible = true;
-                    }
-                    wms.setVisibleLayers(visibleLayers);
-                }
-                service.mapServiceLayers = layers;
+            function castWmts(service) {
+                return utils.getMapServiceType(service) == mapServices.types.wmts ? service : null;
             }
+            mapServices.castWmts = castWmts;
             function add(mapServiceType, url, displayTitle, onServiceError, onServiceAdded) {
                 var mapService = null;
-                if (mapServiceType.toLowerCase() == mapViewerApp.mapServices.types.wms) {
+                if (mapServiceType.toLowerCase() == mapServices.types.wms) {
                     mapService = new WMSLayer(url);
+                }
+                else if (mapServiceType.toLowerCase() == mapServices.types.wmts) {
+                    var layerInfo = new WMTSLayerInfo({
+                        identifier: "opengeo:countries",
+                        tileMatrixSet: "EPSG:900913",
+                        format: "png"
+                    });
+                    var options = {
+                        //layerInfo: layerInfo,
+                        resampling: false,
+                        serviceMode: "KVP"
+                    };
+                    //url = "http://suite.opengeo.org/geoserver/gwc/service/wmts?";
+                    // "http://suite.opengeo.org/geoserver/gwc/service/wmts?SERVICE=WMTS&Request=GetCapabilities
+                    var wmts = new WMTSLayer(url, options);
+                    mapService = wmts;
                 }
                 if (mapService == null) {
                     var lr = new novotive.log.LogRecord("Invalid map service type");
@@ -601,8 +659,27 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
             }
             mapServices.add = add;
             // add()
-            function initNewService(service) {
-                var wms = mapServices.castWms(service);
+            function initService(service) {
+                initWmsService(mapServices.castWms(service));
+                //initWmtsService(mapServices.castWmts(service));
+            }
+            function initWmtsService(wmts) {
+                if (!wmts)
+                    return;
+                if (!mapViewerApp.map.basemapLayerIds || !mapViewerApp.map.basemapLayerIds.length)
+                    return;
+                var baseMapId = mapViewerApp.map.basemapLayerIds[0];
+                var baseMap = mapViewerApp.map.getLayer(baseMapId);
+                if (!baseMap.tileInfo || !baseMap.tileInfo.lods)
+                    return;
+                var mLods = baseMap.tileInfo.lods;
+                wmts.on("load", function (eArgs) {
+                    var wLods = wmts.tileInfo.lods;
+                });
+            }
+            function initWmsService(wms) {
+                if (!wms)
+                    return;
                 if (wms && !wms.loaded) {
                     wms.on("load", function (eArgs) {
                         // By default all WMS layers are invisible
@@ -629,11 +706,17 @@ define(["require", "exports", "dojo/on", "dojo/dom-construct", "dojo/ready", "es
                         onServiceAdded(existedService);
                     return;
                 }
-                initNewService(service);
+                initService(service);
                 console.log("Adding map service", service);
                 var loadErrHandler = service.on("error", function (eArgs) {
                     loadErrHandler.remove();
+                    mapViewerApp.map.removeLayer(service);
                     var logRec = new novotive.log.LogRecord("Map service initialization errror.");
+                    logRec.addDescription(eArgs.error.message);
+                    var respText = eArgs.error.responseText;
+                    if (respText) {
+                        logRec.addDescription("HTTP response: " + respText.substring(0, 100));
+                    }
                     utils.addServiceLogInfo(logRec, service);
                     if (onServiceError)
                         onServiceError(logRec, service);
