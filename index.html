@@ -58,10 +58,25 @@
 		}
 
 		//novotive.log.init();
-
-		require(["scripts/mapviewer/mapviewer-app.js"], function (mapViewerModule) {
+		
+		require([
+            "scripts/mapviewer/mapviewer-app.js",
+            "esri/layers/KMLLayer",
+			"dojo/domReady!"
+		], function (
+            mapViewerModule,
+            KMLLayer
+        ) {
 			mapViewer.app = mapViewerModule.mapViewerApp;
 			console.log("MapViewer application loaded.");
+            
+			var kmlUrl = "https://dl.dropboxusercontent.com/u/2654618/kml/Wyoming.kml";
+			var kml = new KMLLayer(kmlUrl);
+			setTimeout(function(){
+				var pt = new esri.geometry.Point(-108.663, 42.68);
+				mapViewer.app.map.centerAt(pt);
+				mapViewer.app.map.addLayer(kml);				
+			}, 4000);
 		});
 
 	</script>
