@@ -9,5 +9,5 @@ It does not use any server side technology, so just download it to use on Your e
 
 ---
 
-View it live: http://mapviewer.org
+View it live: http://kubaszostak.github.io/mapviewer/
 
